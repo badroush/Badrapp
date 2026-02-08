@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>طباعة ميزانية {{ etablissement.nom }}</title>
+    <style>
+        body { 
+            font-family: "Tajawal", sans-serif; 
+            padding: 20px; 
+            position: relative; 
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50"><text x="50%" y="50%" font-size="10" fill="rgba(0,0,0,0.05)" text-anchor="middle" alignment-baseline="middle">BadrSoftwareDev - منظومة بدر للخدمات الإدارية</text></svg>');
+            background-repeat: repeat;
+            background-size: 300px 100px;
+        }
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            text-align: center;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 4px 1px;
+            border: 1px solid #ddd;
+            line-height: 1.6;
+        }
+        .styled-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .styled-table td {
+            color: #333;
+            font-size: 13px;
+        }
+        .styled-table .total-row {
+            background-color: #ffeaa7 !important;
+            font-weight: bold;
+            color: #000;
+        }
+        .styled-table .subtotal-row {
+            background-color: #e8f4f8 !important;
+            font-weight: bold;
+            color: #000;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 15px;
+        }
+        .header-table td {
+            padding: 8px;
+        }
+        .header-info {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .section-footer {
+            background-color: #ddd;
+            font-weight: bold;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .section-title {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px;
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+                window.close();
+            };
+        };
+    </script>
+</head>
+<body>
+
+<!-- En-tête identique -->
+<table class="header-table">
+    <tr>
+        <td style="text-align: right;">
+            <div class="header-info">
+                الجمهورية التونسية<br>
+                وزارة الشباب و الرياضة<br>
+                المندوبية الجهوية بمدنين<br>
+                {{ etablissement.nom }}
+            </div>
+        </td>
+        <td style="text-align: right;">
+            <div class="header-info">
+               <h1>ميزانية تقديرية</h1>
+            </div>
+        </td>
+        <td style="text-align: left;">
+            
+        </td>
+    </tr>
+</table>
+
+<table class="header-table">
+    <tr class="section-footer">
+        <td style="text-align:right"> السنة المالية: {{ 'now'|date('Y') }}</td>
+        <td style="text-align:left">تاريخ الطبع: {{ 'now'|date('d-m-Y') }}</td>
+    </tr>
+</table>
+
+<!-- Section Ressources -->
+<div class="section-title">موارد المؤسسة</div>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>معرف الفصل</th>
+                        <th>الفصل</th>
+                                    <th>المبلغ</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        {% set total_ressources = 0 %}
+        {% for ressource in ressources %}
+            <tr> 
+                <td>{{ ressource.idRessource.code }}</td>
+                <td style="text-align:right;">{{ ressource.idRessource.nom }}</td>
+                <td>{{ ressource.montant|number_format(3, '.', ',') }} دت</td>
+            </tr>
+            {% set total_ressources = total_ressources + ressource.montant %}
+        {% endfor %}
+        {% if ressources is not empty %}
+        <tr class="subtotal-row">
+            <td colspan="2" style="text-align:right; font-weight:bold;">جملة الموارد:</td>
+            <td>{{ total_ressources|number_format(3, '.', ',') }} دت</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<!-- Section Dépenses -->
+<div class="section-title">النفقات</div>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>معرف الفصل</th>
+                        <th>الفصل</th>
+                                    <th>المبلغ</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        {% set prefixes = [] %}
+        {% for budget in budgets %}
+            {% set prefix = budget.idChapitre.code|slice(0, 5) %}
+            {% if prefix not in prefixes %}
+                {% set prefixes = prefixes|merge([prefix]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% for prefix in prefixes|sort %}
+            {% set group = budgets|filter(b => b.idChapitre.code|slice(0, 5) == prefix)|sort((a, b) => a.idChapitre.nom <=> b.idChapitre.nom) %}
+            {% set subtotal = 0 %}
+
+            <tr class="subtotal-row">
+                <td colspan="3" style="text-align:right; font-weight:bold;">الفصل: {{ prefix }}  </td>
+            </tr>
+
+            {% for budget in group %}
+                <tr> 
+                    <td>{{ budget.idChapitre.code }}</td>
+                    <td style="text-align:right;">{{ budget.idChapitre.nom }}</td>
+                    <td>{{ budget.montant|number_format(3, '.', ',') }} دت</td>
+                </tr>
+                {% set subtotal = subtotal + budget.montant %}
+            {% endfor %}
+
+            <tr class="subtotal-row">
+                <td colspan="2" style="text-align:right; font-weight:bold;">المجموع:</td>
+                <td>{{ subtotal|number_format(3, '.', ',') }} دت</td>
+            </tr>
+        {% endfor %}
+
+        <!-- Total général -->
+{% set total_general = 0 %}
+{% for budget in budgets %}
+    {% set total_general = total_general + budget.montant %}
+{% endfor %}
+<tr class="total-row">
+    <td colspan="2" style="text-align:right; font-weight:bold;">المجموع العام:</td>
+    <td>{{ total_general|number_format(3, '.', ',') }} دت</td>
+</tr>
+    </tbody>
+</table>
+
+</body>
+</html>

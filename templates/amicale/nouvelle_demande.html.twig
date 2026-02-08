@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تقديم طلب جديد
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">تقديم طلب جديد</h2>
+						<p class="mb-0 text-light">املأ النموذج أدناه لتقديم طلبك</p>
+					</div>
+					<div class="card-body p-5">
+						{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+						{# Afficher le total de l'offre sélectionnée #}
+						{% if form.vars.value.offre and form.vars.value.offre.total %}
+							<div class="alert alert-info">
+								المبلغ الإجمالي للعرض:
+								{{ form.vars.value.offre.total|number_format(3, '.', ',') }}
+							</div>
+						{% endif %}
+						<div class="mb-4">
+							{{ form_label(form.offre, 'العرض', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+							{{ form_widget(form.offre, {'attr': {'class': 'form-select', 'required': true}}) }}
+							{{ form_help(form.offre) }}
+							{{ form_errors(form.offre) }}
+						</div>
+
+						<div class="mb-4">
+							{{ form_label(form.beneficiaire, 'المستفيد', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+							{{ form_widget(form.beneficiaire, {'attr': {'class': 'form-control'}}) }}
+							{{ form_help(form.beneficiaire) }}
+							{{ form_errors(form.beneficiaire) }}
+						</div>
+
+						<div class="mb-4">
+							{{ form_label(form.commentaire, 'ملاحظات إضافية', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+							{{ form_widget(form.commentaire, {'attr': {'class': 'form-control', 'rows': 4, 'placeholder': 'أضف ملاحظاتك هنا...'}}) }}
+							{{ form_help(form.commentaire) }}
+							{{ form_errors(form.commentaire) }}
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+							<a href="{{ path('app_amicale_index') }}" class="btn btn-outline-secondary me-md-2">
+								<i class="fas fa-arrow-left"></i>
+								العودة إلى القائمة
+							</a>
+							<button type="submit" class="btn btn-success btn-lg px-4">
+								<i class="fas fa-paper-plane"></i>
+								إرسال الطلب
+							</button>
+						</div>
+
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.form-label {
+			color: #495057;
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+		.btn-lg {
+			padding: 10px 20px;
+		}
+	</style>
+
+{% endblock %}

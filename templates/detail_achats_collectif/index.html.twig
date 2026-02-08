@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}قائمة تفاصيل المشتريات الجماعية{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+           <div class="col-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">📋 قائمة تفاصيل المشتريات الجماعية</h2>
+                        <p class="mb-0 text-light">إدارة تفاصيل المشتريات الجماعية</p>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <a href="{{ path('app_detail_achats_collectif_new') }}" class="btn btn-success px-4 py-2">
+                                <i class="fas fa-plus-circle"></i> إنشاء تفاصيل جديدة
+                            </a>
+                        </div>
+
+                        {% if detail_achats_collectifs is not empty %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>الرقم</th>
+                                            <th>ال Chapitre</th>
+                                            <th>ال Article</th>
+                                            <th>السعر</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for detail in detail_achats_collectifs %}
+                                        <tr>
+                                            <td>{{ detail.id }}</td>
+                                            <td>{{ detail.chapitreAchatsCollectif.nom }}</td>
+                                            <td>{{ detail.article.nom }}</td>
+                                            <td>{{ detail.prixVente|number_format(3, '.', ',') }}</td>
+                                            <td>
+                                                <a href="{{ path('app_detail_achats_collectif_show', {'id': detail.id}) }}" class="btn btn-sm btn-outline-info me-1">
+                                                    <i class="fas fa-eye"></i> عرض
+                                                </a>
+                                                <a href="{{ path('app_detail_achats_collectif_edit', {'id': detail.id}) }}" class="btn btn-sm btn-outline-warning">
+                                                    <i class="fas fa-edit"></i> تعديل
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle"></i>
+                                لا توجد سجلات
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .table th {
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}

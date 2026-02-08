@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ملف المستخدم
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">👤 ملف المستخدم</h2>
+					</div>
+					<div class="card-body p-5">
+						<div class="text-center mb-4">
+							{% if user.avatar %}
+								<img src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="Avatar" class="avatar rounded-circle d-inline-block p-3" style="width: 100px; height: 100px; object-fit: cover;">
+							{% else %}
+								<div class="avatar-placeholder bg-light rounded-circle d-inline-block p-3">
+									<i class="fas fa-user fa-3x text-success"></i>
+								</div>
+							{% endif %}
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<p>
+									<strong>البريد الإلكتروني:</strong>
+									{{ user.email }}</p>
+								<p>
+									<strong>الاسم:</strong>
+									{{ user.nomp }}</p>
+								<p>
+									<strong>المعرف الوحيد:</strong>
+									{{ user.matricule ?? 'N/A' }}</p>
+							</div>
+							<div class="col-md-6">
+								<p>
+									<strong>المؤسسة:</strong>
+									{{ user.etablissement.nom ?? 'N/A' }}</p>
+								<p>
+									<strong>رقم.ب.ت.و:</strong>
+									{{ user.cin ?? 'N/A' }}</p>
+								<p>
+									<strong>الرتبة:</strong>
+									{{ user.grade ?? 'N/A' }}</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<p>
+									<strong>الدور:</strong>
+									{% for role in user.roles %}
+										{% if role == 'ROLE_USER' %}
+											{{ 'مستعمل عادي' }}
+										{% elseif role == 'ROLE_SOUS_ADMIN' %}
+											{{ 'Sous-admin' }}
+										{% elseif role == 'ROLE_ADMIN' %}
+											{{ 'مدير' }}
+										{% elseif role == 'ROLE_SUPER_ADMIN' %}
+											{{ 'مدير عام' }}
+										{% elseif role == 'ROLE_DRJ' %}
+											{{ 'مدير شباب' }}
+										{% elseif role == 'ROLE_DRS' %}
+											{{ 'مدير رياضة' }}
+										{% elseif role == 'ROLE_MAG' %}
+											{{ 'مدير مغازة' }}
+										{% elseif role == 'ROLE_FNC' %}
+											{{ 'مدير مالي' }}
+										{% else %}
+											{{ role }}
+										{% endif %}
+										{% if not loop.last %},
+										{% endif %}
+									{% endfor %}
+								</p>
+							</div>
+						</div>
+
+						<div class="d-flex justify-content-between mt-4">
+						{% if is_granted("ROLE_ADMIN") %}
+							<a href="{{ path('app_profile_edit') }}" class="btn btn-primary">
+								<i class="fas fa-edit me-2"></i>
+								تعديل الملف
+							</a>
+							{% endif %}
+							<a href="{{ path('app_profile_change_password') }}" class="btn btn-warning">
+								<i class="fas fa-key me-2"></i>
+								تغيير كلمة المرور
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+{% endblock %}

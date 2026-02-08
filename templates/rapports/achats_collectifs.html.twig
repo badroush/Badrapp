@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} تقرير المشتريات الجماعية {% endblock %}
+
+{% block stylesheets %}
+<style>
+    .preview-section {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        margin: 20px 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 18px;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        background-color: #fefefe;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 4px 1px;
+        border: 1px solid #ddd;
+        background-color: #ffffff;
+        line-height: 1.6;
+    }
+
+    .styled-table th {
+        background-color: #3498db;
+        color: white;
+        font-weight: bold;
+        font-size: 19px;
+    }
+
+    .styled-table td {
+        color: #333;
+        font-size: 18px;
+    }
+
+    .styled-table tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    .styled-table .total-row {
+        background-color: #ffeaa7 !important;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    .header-table td {
+        padding: 8px;
+    }
+    .header-info {
+        font-weight: bold;
+        font-size: 19px;
+    }
+    .section-footer {
+        background-color: #ddd;
+        font-weight: bold;
+        padding: 8px;
+        font-size: 17px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">📋 تقرير الشراءات الجماعية</h2>
+        </div>
+
+
+        <div class="card-body">
+            <!-- Formulaire de filtre -->
+            <form method="get" class="mb-4">
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+        {% if etablissements is not empty %}
+            <div class="mb-3">
+                <label class="form-label">اختر المؤسسة:</label>
+                <select name="etab" class="form-select">
+                    <option value="">الكل</option>
+                    {% for etab in etablissements %}
+                        <option value="{{ etab.id }}" {{ etabFilter == etab.id ? 'selected' }}>
+                            {{ etab.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- Afficher le nom de l'établissement pour les autres -->
+        <div class="alert alert-info mb-3">
+            <strong>المؤسسة:</strong> {{ app.user.etablissement.nom }}
+        </div>
+    {% endif %}
+
+    <div class="mb-3">
+        <label class="form-label">اختر الفصل:</label>
+        <select name="chapitre" class="form-select">
+            <option value="">الكل</option>
+            {% for chapitre in chapitres %}
+                <option value="{{ chapitre.id }}" {{ chapitreFilter == chapitre.id ? 'selected' }}>
+                    {{ chapitre.nom }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button class="btn btn-primary">بحث</button>
+</form>
+
+            <!-- Aperçu dans la page -->
+            <div class="preview-section">
+                <table class="header-table">
+                    <tr>
+                        <td style="text-align: right;">
+                            
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="header-info">
+    تقرير الشراءات الجماعية<br>
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+        {% if etabFilter %}
+            {{ etablissements|filter(e => e.id == etabFilter)|first.nom }}
+        {% else %}
+            
+        {% endif %}
+    {% else %}
+        {{ app.user.etablissement.nom }}
+    {% endif %}<br>
+    {% if chapitreFilter %}
+        {{ chapitres|filter(c => c.id == chapitreFilter)|first.nom }}
+    {% else %}
+        
+    {% endif %}
+</div>
+                        </td>
+                        <td style="text-align: left;">
+                            
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="header-table">
+                    <tr class="section-footer">
+                        <td style="text-align:right"> السنة المالية: {{ 'now'|date('Y') }}</td>
+                        <td style="text-align:left">تاريخ الطبع: {{ 'now'|date('d-m-Y') }}</td>
+                    </tr>
+                </table>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>السعر</th>
+                            <th>الكمية</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for achat in achats %}
+                        <tr>
+                            <td>{{ achat.article_nom }}</td>
+                            <td>{{ achat.prix_vente|number_format(3, '.', ',') }}</td>
+                            <td>{{ achat.total_quantite }}</td>
+                            <td>{{ achat.total_quantite * achat.prix_vente|number_format(3, '.', ',') }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="background-color:#fdecea; color:#e74c3c; font-weight:bold;">لا توجد الشراءات</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="total-row">
+                            <td colspan="3" style="text-align:right; font-weight:bold;">المجموع:</td>
+                            <td>
+                                {% set total = 0 %}
+                                {% for achat in achats %}
+                                    {% set total = total + achat.total_quantite * achat.prix_vente %}
+                                {% endfor %}
+                                {{ total|number_format(3, '.', ',') }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            </div>
+
+            <!-- Bouton d'impression -->
+            <div class="text-center mt-4">
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('app_achats_collectifs_imprimer', {
+                    'etab': etabFilter,
+                    'chapitre': chapitreFilter
+                }) }}" class="btn btn-success btn-lg" target="_blank">
+                    <i class="fas fa-print me-2"></i> طباعة
+                </a>
+{% endif %}
+                {% if chapitreFilter and etabFilter %}
+    <a href="{{ path('app_rapport_achat_collectif_show', {
+        'chapitre': chapitreFilter,
+        'etablissement': etabFilter
+    }) }}" 
+       class="btn btn-success" 
+       target="_blank">
+        📄 إنشاء تقرير التوزيع
+    </a>
+{% else %}
+    <span class="text-muted">حدد الفصل والمؤسسة لتوليد التقرير</span>
+{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

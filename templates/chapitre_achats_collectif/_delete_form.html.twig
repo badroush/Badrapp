@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('app_chapitre_achats_collectif_delete', {'id': chapitre_achats_collectif.id}) }}" onsubmit="return confirm('هل أنت متأكد من رغبتك في حذف هذا العنصر؟');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chapitre_achats_collectif.id) }}">
+    <button class="btn btn-outline-danger btn-sm">
+        <i class="fas fa-trash me-1"></i>
+        حذف
+    </button>
+</form>

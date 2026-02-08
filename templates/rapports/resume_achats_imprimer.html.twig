@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>جدول ملخص المشتريات</title>
+    <style>
+        body { font-family: "Tajawal", sans-serif; padding: 20px; }
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 18px;
+            text-align: center;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 4px 1px;
+            border: 1px solid #ddd;
+            line-height: 1.6;
+        }
+        .styled-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 19px;
+        }
+        .styled-table td {
+            color: #333;
+            font-size: 18px;
+        }
+        .styled-table .total-row {
+            background-color: #ffeaa7 !important;
+            font-weight: bold;
+            color: #000;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 18px;
+        }
+        .header-table td {
+            padding: 8px;
+        }
+        .header-info {
+            font-weight: bold;
+            font-size: 19px;
+        }
+        .section-footer {
+            background-color: #ddd;
+            font-weight: bold;
+            padding: 8px;
+            font-size: 17px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+                window.close();
+            };
+        };
+    </script>
+</head>
+<body>
+    <table class="header-table">
+        <tr>
+            <td style="text-align: right;">
+                <div class="header-info">
+                    الجمهورية التونسية<br>
+                    وزارة الشباب و الرياضة<br>
+                    المندوبية الجهوية بمدنين
+                </div>
+            </td>
+            <td style="text-align: center;">
+                <div class="header-info">
+                    جدول ملخص المشتريات<br>
+                    {{ 'now'|date('Y') }}
+                </div>
+            </td>
+            <td style="text-align: left;">
+                
+            </td>
+        </tr>
+    </table>
+
+    <table class="header-table">
+        <tr class="section-footer">
+            <td style="text-align:right"> السنة المالية: {{ 'now'|date('Y') }}</td>
+            <td style="text-align:left">تاريخ الطبع: {{ 'now'|date('d-m-Y') }}</td>
+        </tr>
+    </table>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>المادة</th>
+                {% for etab in etablissements %}
+                    <th>{{ etab.nom }}</th>
+                {% endfor %}
+                <th>المجموع</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for articleData in articles %}
+                {% set article = articleData %}
+                <tr>
+                    <td>{{ article.nom ?? 'N/A' }}</td>
+                    {% set totalArticle = 0 %}
+                    {% for etab in etablissements %}
+                        {% set quantite = quantites[etab.id][article.id] ?? 0 %}
+                        <td class="text-center">{{ quantite }}</td>
+                        {% set totalArticle = totalArticle + quantite %}
+                    {% endfor %}
+                    <td class="text-center">{{ totalArticle }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

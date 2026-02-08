@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إدارة الميزانية{% endblock %}
+
+{% block body %}
+<div class="container mt-1">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">📊 إدارة الميزانية</h1>
+            <a href="{{ path('app_budget_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة نفقة
+            </a>
+        </div>
+        <div class="card-body p-0">
+            {% if budgets is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="budgetTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>الرمز</th>
+                                <th>الاسم</th>
+                                <th>المؤسسة</th>
+                                <th>المبلغ</th>
+                                <th>السنة</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for budget in budgets %}
+                                <tr>
+                                    <td>{{ budget.idChapitre.code }}</td>
+                                    <td>{{ budget.idChapitre.nom }}</td>
+                                    <td>{{ budget.idEtablissement.nom }}</td>
+                                    <td>{{ budget.montant|number_format(2, '.', ',') }}</td>
+                                    <td>{{ budget.annee }}</td>
+                                    <td>
+                                    {% if action_control.canShow('update_budget') %}
+                                        <a href="{{ path('app_budget_edit', {'id': budget.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if action_control.canShow('delete_budget') %}
+                                        <form method="post" action="{{ path('app_budget_delete', {'id': budget.id}) }}" style="display: inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذه الميزانية؟');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ budget.id) }}">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">لا توجد ميزانيات.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialiser DataTables avec traduction arabe
+    new DataTable('#budgetTable', {
+        language: {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يُعثر على نتائج",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "إظهار 0 إلى 0 من أصل 0 مدخل",
+            "sInfoFiltered": "(من أصل _MAX_ مدخل)",
+            "sSearch": "بحث:",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            }
+        },
+        paging: true,
+        pageLength: 10,
+        searching: true,
+        info: true,
+        order: [[0, 'asc']]
+    });
+});
+</script>
+{% endblock %}

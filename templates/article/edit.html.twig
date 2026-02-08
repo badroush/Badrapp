@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تعديل منتج{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+=======
+{% include "layout/header.html.twig" %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+            <h2>✏️ تعديل المنتج: {{ article.nom }}</h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+
+                        {{ form_row(form.nom) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.categorie) }}
+                        {{ form_row(form.fournisseur) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> تحديث
+                </button>
+                <a href="{{ path('article_index') }}" class="btn btn-secondary">إلغاء</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

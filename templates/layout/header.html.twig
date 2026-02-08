@@ -1,0 +1,498 @@
+<<<<<<< HEAD
+    <!-- Bootstrap 5 RTL CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+  <style>
+/* ================= GLOBAL ================= */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* ================= TOP NAVBAR ================= */
+.top-navbar {
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1050;
+}
+
+.top-navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+/* ================= USER ================= */
+.user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #1f2937;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1d4ed8;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+/* ===== USER DROPDOWN (NAVBAR) ===== */
+.dropdown-menu {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 8px 0;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    z-index: 2000;
+}
+
+.dropdown-item {
+    font-weight: 500;
+    padding: 10px 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #eef2ff;
+    color: #1d4ed8;
+}
+
+.dropdown-divider {
+    margin: 6px 0;
+}
+/* ================= SIDEBAR ================= */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 260px;
+    height: calc(100vh - 60px);
+    background: #ffffff;
+    border-left: 1px solid #e5e7eb;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 6px;
+}
+
+.sidebar a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+    background: #eef2ff;
+    color: #1d4ed8;
+}
+
+.sidebar .collapse a {
+    padding-right: 28px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.sidebar .collapse a:hover {
+    background: #e0e7ff;
+}
+
+/* ================= MAIN CONTENT ================= */
+.main-content {
+    margin-top: 60px;
+    margin-right: 240px;
+    
+   
+}
+
+/* ================= CARDS ================= */
+.card {
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-radius: 10px;
+}
+
+.card-header {
+    background: #ffffff;
+    font-weight: 600;
+}
+
+/* ================= SELECT2 RTL ================= */
+.select2-selection__rendered,
+.select2-search--dropdown .select2-search__field {
+    text-align: right !important;
+}
+
+/* ================= SWEETALERT RTL ================= */
+.swal2-rtl .swal2-title,
+.swal2-rtl .swal2-html-container,
+.swal2-rtl .swal2-input {
+    text-align: right !important;
+}
+
+.swal2-rtl .swal2-actions {
+    flex-direction: row-reverse;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background: #f1f3f5;
+    border-top: 1px solid #e5e7eb;
+    padding: 1rem 0;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0;
+        border-left: none;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .main-content {
+        margin-right: 0;
+        padding: 15px;
+    }
+    /* Logo réduit pour navbar */
+.navbar-logo {
+    width: 25px;         /* petite taille adaptée à la navbar */
+    height: 25px;
+    object-fit: contain;  /* garde les proportions du logo */
+    border-radius: 8px;  /* coins légèrement arrondis */
+}
+}
+
+
+</style>
+{% if app.user %}
+    <!-- Navbar en haut (logo à droite, utilisateur à gauche) -->
+<nav class="navbar navbar-light bg-white shadow-sm fixed-top border-bottom d-flex justify-content-between px-3">
+    <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
+    <span class="fw-bold text-primary me-2">بدر للخدمات الإدارية</span>
+    <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="navbar-logo">
+</a>
+
+    <!-- قائمة المستخدم -->
+    <div class="dropdown">
+        <a class="dropdown-toggle text-dark text-decoration-none d-flex align-items-center" 
+           href="#" role="button" data-bs-toggle="dropdown">
+            <div class="avatar-placeholder me-2">
+                {% if app.user.avatar %}
+                    <img src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" 
+                         alt="الصورة الشخصية" 
+                         class="rounded-circle border border-2 border-primary" 
+                         style="width: 40px; height: 40px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-gradient-light d-flex align-items-center justify-content-center text-white fw-bold" 
+                         style="width: 40px; height: 40px;">
+                        {{ app.user.userIdentifier|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+            <span class="fw-bold">{{ app.user.nomp }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li><a class="dropdown-item" href="{{ path('app_profile_show') }}">👤 الملف الشخصي</a></li>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                <li><a class="dropdown-item" href="{{ path('admin') }}">🔧 الإدارة</a></li>
+                <li><hr class="dropdown-divider"></li>
+            {% endif %}
+            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">🚪 تسجيل الخروج</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+    <!-- Sidebar fixe à droite -->
+    <aside class="sidebar bg-light border-start vh-100 p-3">
+        <ul class="list-unstyled">
+
+{# 💰 BUDGET #}
+{% if is_granted('ROLE_FNC') or is_granted('ROLE_DRJ') %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#budgetMenu">
+        💰 الميزانية <span>▾</span>
+    </a>
+    <ul id="budgetMenu" class="collapse list-unstyled ps-3 mt-2">
+        {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('app_chapitre_budget_index') }}">📑 الفصول</a></li>
+        <li><a href="{{ path('app_ressource_budget_index') }}">💰 المصادر</a></li>
+       <li><a href="{{ path('app_ressource_affectation_index') }}">📤 تخصيصات المصادر</a></li>
+        {% endif %}
+        <li><a href="{{ path('app_budget_index') }}">📊 الميزانيات</a></li>
+        <li><a href="{{ path('app_budget_new') }}">➕ إضافة نفقة</a></li>
+        <li><a href="{{ path('app_rapports_index') }}">📋 طباعة الميزانية</a></li>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href="{{ path('app_ressource_affectation_new') }}">➕ إضافة تخصيص</a></li> 
+        <li><a href="{{ path('app_ressource_budget_new') }}">➕ إضافة مصدر</a></li>
+        <li><a href="{{ path('app_chapitre_budget_new') }}">➕ إضافة فصل</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+
+{# 🛒 MAGASIN #}
+{% if is_granted('ROLE_MAG') %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#magasinMenu">
+        🛒 المغازة <span>▾</span>
+    </a>
+    <ul id="magasinMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('article_index') }}">📦 المواد</a></li>
+        <li><a href="{{ path('stock_index') }}">📊 حالة المخزون</a></li>
+        <li><a href="{{ path('mouvement_index') }}">📋 حركة المخزون</a></li>
+        <li><a href="{{ path('mouvement_ajouter') }}">➕ حركة جديدة</a></li>
+    </ul>
+</li>
+{% endif %}
+
+{# 📋 INVENTAIRE #}
+{% if is_granted('ROLE_MAG') or is_granted('ROLE_DRJ') %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#inventaireMenu">
+        📋 جرد الأثاث <span>▾</span>
+    </a>
+    <ul id="inventaireMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('materiel_index') }}">📦 المعدات</a></li>
+        <li><a href="{{ path('materiel_filtrer') }}">🔍 بحث و طباعة</a></li>
+        {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('etablissement_index') }}">🏢 المؤسسات</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+
+{# 👥 AMICAL #}
+{% if app.user %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#amicaleMenu">
+        👥 الودادية <span>▾</span>
+    </a>
+    <ul id="amicaleMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('app_amicale_index') }}">📋 الطلبات</a></li>
+        <li><a href="{{ path('app_amicale_offres') }}">🎁 العروض</a></li>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href="{{ path('app_amicale_admin') }}">🔧 إدارة الودادية</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+
+{# 🛍️ ACHATS COLLECTIFS #}
+{% if is_granted('ROLE_FNC') or is_granted('ROLE_DRJ') %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#achatsMenu">
+        🛍️ الشراءات الجماعية <span>▾</span>
+    </a>
+    <ul id="achatsMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('app_achats_collectifs_index') }}">📋 الفصول</a></li>
+        <li><a href="{{ path('app_achats_collectifs_panier') }}">🛒 شراءاتي</a></li>
+        <li><a href="{{ path('app_rapports_index') }}">🖨️ طباعة الشراءات</a></li>
+        {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('achats_collectifs_tableau_recap') }}">📊 جدول ملخص</a></li>
+        {% endif %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href="{{ path('app_chapitre_achats_collectif_index') }}">🔧 الفصول</a></li>
+        <li><a href="{{ path('app_detail_achats_collectif_index') }}">🔧 المواد</a></li>
+        <li><a href="{{ path('app_statistiques_index') }}">📊 الإحصائيات</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+
+{# carte d'adhésion #}
+{% if is_granted('ROLE_FNC') or is_granted('ROLE_DRJ') %}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#carteAdhesionMenu">
+        🛍️ بطاقة العضوية <span>▾</span>
+    </a>
+    <ul id="carteAdhesionMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('adhesion_index') }}">📋 إدارة الأعضاء</a></li>
+        <li><a href="{{ path('adhesion_new') }}">➕ إضافة عضو جديد</a></li>
+    </ul>
+</li>
+{% endif %}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DRJ') %}
+{# 🏢 ETABLISSEMENTS #}
+{# 💻 INFORMATIQUE #}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#itMenu">
+        💻 الاعلامية و الانترنات <span>▾</span>
+    </a>
+    <ul id="itMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li><a href="{{ path('app_demande_maintenance_index') }}">🛠️ طلب الصيانة</a></li>
+        {% if is_granted('ROLE_TECH') %}
+        <li><a href="{{ path('app_connexion_internet_index') }}">🌐 الإنترنت</a></li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STD') %}
+{# 📞 ANNUAIRE TELEPHONIQUE #}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#annuaireMenu">
+        📞 الدليل الهاتفي <span>▾</span>
+    </a>
+    <ul id="annuaireMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li>
+            <a href="{{ path('app_annuaire_home') }}">
+                📒 عرض الدليل
+            </a>
+            <a href="{{ path('app_appel_index') }}">
+                📇 إدارة جهات الاتصال
+            </a>
+            <a href="{{ path('app_appel_new') }}">
+                📞 تسجيل المكالمات
+            </a>
+        </li>
+    </ul>
+</li>
+{% endif %}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DRS') %}
+{# ⚽ ASSOCIATIONS SPORTIVES #}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#associationMenu">
+        ⚽ الجمعيات الرياضية <span>▾</span>
+    </a>
+    <ul id="associationMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li>
+            <a href="{{ path('app_association_sportif_index') }}">
+                📋 عرض الجمعيات
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_association_sportif_new') }}">
+                ➕ إضافة جمعية
+            </a>
+        </li>
+    </ul>
+</li>
+
+{# 📅 JOURNÉES SANTÉ #}
+<li class="mb-2">
+    <a class="fw-bold d-flex justify-content-between" data-bs-toggle="collapse" href="#seanceMenu">
+        📅 الجلسات العامة <span>▾</span>
+    </a>
+    <ul id="seanceMenu" class="collapse list-unstyled ps-3 mt-2">
+        <li>
+            <a href="{{ path('app_seance_plenaire_index') }}">
+                📋 عرض الجلسات
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_seance_plenaire_new') }}">
+                ➕ إضافة جلسة
+            </a>
+        </li>
+    </ul>
+</li>
+{% endif %}
+
+
+        </ul>
+    </aside>
+
+    <!-- Contenu principal : collé au coin haut droit -->
+    <div class="main-content">
+        {% block body %}{% endblock %}
+    </div>
+{% else %}
+    <script>
+        window.location.href = "{{ path('app_login') }}";
+    </script>
+{% endif %}
+=======
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('app_home') }}">📦 إدارة المخزون</a>
+
+        <!-- Bouton hamburger pour petits écrans -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% block menu_central %}
+                <div class="navbar-nav me-auto">
+                    <div class="dropdown d-inline-block me-2">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="magasinDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            🛒 المغازة
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="magasinDropdown">
+                            <li><a class="dropdown-item" href="{{ path('article_index') }}">📦 المواد</a></li>
+                            <li><a class="dropdown-item" href="{{ path('stock_index') }}">📊 حالة المخزون</a></li>
+                            <li><a class="dropdown-item" href="{{ path('mouvement_index') }}">📋 حركة المخزون</a></li>
+                            <li><a class="dropdown-item" href="{{ path('mouvement_ajouter') }}">➕ حركة جديدة</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown d-inline-block me-2">
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="inventaireDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            📋 جرد الأثاث
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="inventaireDropdown">
+                             <li><a class="dropdown-item" href="{{ path('materiel_index') }}">📦 المعدات</a></li>
+                            <li><a class="dropdown-item" href="{{ path('etablissement_index') }}">🏢 المؤسسات</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock %}
+
+            <!-- Avatar utilisateur avec menu déroulant -->
+            <div class="dropdown d-flex align-items-center">
+                <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="avatar-placeholder me-2">
+                        {{ app.user.userIdentifier|first|upper }}
+                    </div>
+                    <span class="text-muted small">{{ app.user.nomp }}</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><h6 class="dropdown-header">{{ app.user.userIdentifier }}</h6></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a class="dropdown-item" href="{{ path('admin') }}">🔧 لوحة الإدارة</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">🚪 تسجيل الخروج</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

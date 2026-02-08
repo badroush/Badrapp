@@ -1,0 +1,43 @@
+<style>
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkbox-group .form-check {
+    margin-bottom: 0.5rem;
+    padding-right: 1.5rem;
+}
+
+.checkbox-group .form-check-input {
+    float: right;
+    margin-right: -1.5em;
+}
+
+.checkbox-group .form-check-label {
+    margin-right: 0.5em;
+}
+</style>
+
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+    <div class="col-md-6">
+        {{ form_row(form.association, {'label': 'الجمعية'}) }}
+        {{ form_row(form.date, {'label': 'تاريخ الجلسة'}) }}
+        {{ form_row(form.type, {'label': 'نوع الجلسة'}) }}
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ form_label(form.documents, 'الوثائق') }}
+            {{ form_widget(form.documents, {'attr': {'class': 'checkbox-group'}}) }}
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success">
+            <i class="bi bi-save"></i> {{ button_label|default('حفظ') }}
+        </button>
+        <a href="{{ path('app_seance_plenaire_index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-return-left"></i> عودة إلى القائمة
+        </a>
+    </div>
+{{ form_end(form) }}

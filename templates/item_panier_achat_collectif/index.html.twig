@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}قائمة عناصر سلة المشتريات الجماعية{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-lg-10 col-md-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">🛒 قائمة عناصر سلة المشتريات الجماعية</h2>
+                        <p class="mb-0 text-light">إدارة عناصر سلة المشتريات الجماعية</p>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <a href="{{ path('app_item_panier_achat_collectif_new') }}" class="btn btn-success px-4 py-2">
+                                <i class="fas fa-plus-circle"></i> إنشاء عنصر جديد
+                            </a>
+                        </div>
+
+                        {% if item_panier_achat_collectifs is not empty %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>الرقم</th>
+                                            <th>ال Panier</th>
+                                            <th>ال Article</th>
+                                            <th>الكمية</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in item_panier_achat_collectifs %}
+                                        <tr>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.panier.id }}</td>
+                                            <td>{{ item.detailAchatCollectif.article.nom }}</td>
+                                            <td>{{ item.quantite }}</td>
+                                            <td>
+                                                <a href="{{ path('app_item_panier_achat_collectif_show', {'id': item.id}) }}" class="btn btn-sm btn-outline-info me-1">
+                                                    <i class="fas fa-eye"></i> عرض
+                                                </a>
+                                                <a href="{{ path('app_item_panier_achat_collectif_edit', {'id': item.id}) }}" class="btn btn-sm btn-outline-warning">
+                                                    <i class="fas fa-edit"></i> تعديل
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle"></i>
+                                لا توجد سجلات
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .table th {
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إدارة تخصيصات المصادر{% endblock %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">📤 إدارة تخصيصات المصادر</h1>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_ressource_affectation_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة تخصيص
+            </a>
+            {% endif %}
+        </div>
+        <div class="card-body p-0">
+            {% if ressource_affectations is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="ressourceAffectationTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>المصدر</th>
+                                <th>المؤسسة</th>
+                                <th>المبلغ</th>
+                                <th>السنة</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for affectation in ressource_affectations %}
+                                <tr>
+                                    <td>{{ affectation.idRessource.nom }}</td>
+                                    <td>{{ affectation.idEtablissement.nom }}</td>
+                                    <td>{{ affectation.montant|number_format(2, '.', ',') }}</td>
+                                    <td>{{ affectation.annee }}</td>
+                                    <td>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('app_ressource_affectation_edit', {'id': affectation.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="post" action="{{ path('app_ressource_affectation_delete', {'id': affectation.id}) }}" style="display: inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا التخصيص؟');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ affectation.id) }}">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">لا توجد تخصيصات.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialiser DataTables avec traduction arabe
+    new DataTable('#ressourceAffectationTable', {
+        language: {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يُعثر على نتائج",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "إظهار 0 إلى 0 من أصل 0 مدخل",
+            "sInfoFiltered": "(من أصل _MAX_ مدخل)",
+            "sSearch": "بحث:",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            }
+        },
+        paging: true,
+        pageLength: 15,
+        searching: true,
+        info: true,
+        order: [[0, 'asc']]
+    });
+});
+</script>
+{% endblock %}

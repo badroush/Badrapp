@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تفاصيل الجلسة العامة{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📋 تفاصيل الجلسة العامة</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">الرقم</th>
+                        <td>{{ seance_plenaire.id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">الجمعية</th>
+                        <td>{{ seance_plenaire.association.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">التاريخ</th>
+                        <td>{{ seance_plenaire.date|date('Y-m-d') }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">النوع</th>
+                        <td>{{ seance_plenaire.type }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">الوثائق</th>
+                        <td>
+                            {% for document in seance_plenaire.documents %}
+                                <a href="{{ asset('uploads/documents/' ~ document.fichier) }}" target="_blank" class="badge bg-info me-1">
+                                    {{ document.nom }}
+                                </a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-3">
+                <a href="{{ path('app_seance_plenaire_index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-return-left"></i> عودة إلى القائمة
+                </a>
+                <a href="{{ path('app_seance_plenaire_edit', {'id': seance_plenaire.id}) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> تعديل
+                </a>
+                <a href="{{ path('app_seance_plenaire_delete', {'id': seance_plenaire.id}) }}" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> حذف
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="d-flex justify-content-between mt-3">
+        <a class="btn btn-secondary" href="{{ path('app_connexion_internet_index') }}">إلغاء</a>
+        <button class="btn btn-success">{{ button_label|default('تعديل') }}</button>
+    </div>
+{{ form_end(form) }}

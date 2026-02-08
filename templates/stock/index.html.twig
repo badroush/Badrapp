@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ملخص المخزون{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+<div class="container mt-4">
+    <div class="card shadow-sm">
+       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">📊 ملخص المخزون</h1>
+            <a href="{{ path('mouvement_ajouter') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة حركة
+            </a>
+        </div>
+=======
+{% include "layout/header.html.twig" %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>📊 ملخص المخزون</h1>
+        <a href="{{ path('mouvement_ajouter') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> إضافة حركة
+        </a>
+    </div>
+
+    <div class="card">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+        <div class="card-body p-0">
+            {% if stockSummary is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0" id="stockTable">
+<<<<<<< HEAD
+                        <thead class="table-light">
+=======
+                        <thead class="table-primary">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+                            <tr>
+                                <th>المنتج</th>
+                                <th>التصنيف</th>
+                                <th>الدخول</th>
+                                <th>الخروج</th>
+                                <th>الرصيد</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in stockSummary %}
+                                <tr>
+                                    <td><strong>{{ item.article_nom }}</strong></td>
+                                    <td>{{ item.categorie_nom ?? '—' }}</td>
+                                    <td class="text-success">+{{ item.total_entrees }}</td>
+                                    <td class="text-danger">-{{ item.total_sorties }}</td>
+                                    <td>{{ item.total_entrees - item.total_sorties }}</td>
+                                    <td>
+                                        {% if (item.total_entrees - item.total_sorties) < item.seuil_alerte %}
+                                            <span class="badge bg-danger">⚠️ منخفض</span>
+                                        {% else %}
+                                            <span class="badge bg-success">✅ كافٍ</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">لا توجد منتجات.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<<<<<<< HEAD
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js  "></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js  "></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    new DataTable('#stockTable', {
+        language: { url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json  ' },
+        paging: true,
+        pageLength: 10,
+=======
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    new DataTable('#stockTable', {
+        language: { url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json' },
+        paging: true,
+        pageLength: 25,
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+        searching: true,
+        info: true,
+        order: [[0, 'asc']]
+    });
+});
+</script>
+<<<<<<< HEAD
+{% endblock %}
+=======
+{% endblock %}
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

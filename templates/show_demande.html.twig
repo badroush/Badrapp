@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تفاصيل الطلب{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>تفاصيل الطلب</h1>
+
+    <table class="table">
+        <tr>
+            <th>العرض</th>
+            <td>{{ demande.offre.nom }}</td>
+        </tr>
+        <tr>
+            <th>المستفيد</th>
+            <td>{{ demande.beneficiaire.nomComplet }}</td>
+        </tr>
+        <tr>
+            <th>التاريخ</th>
+            <td>{{ demande.dateDemande|date('Y-m-d H:i') }}</td>
+        </tr>
+        <tr>
+            <th>الحالة</th>
+            <td>{{ demande.statut }}</td>
+        </tr>
+        <tr>
+            <th>ملاحظات</th>
+            <td>{{ demande.commentaire|default('لا يوجد') }}</td>
+        </tr>
+        <tr>
+            <th>ملف مرفق</th>
+            <td>
+                {% if demande.fichiersJoints %}
+                    <a href="{{ asset('uploads/amicale/' ~ demande.fichiersJoints) }}" target="_blank">تحميل الملف</a>
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <a href="{{ path('app_amicale_index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
+</div>
+{% endblock %}

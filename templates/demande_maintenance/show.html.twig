@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}طلب الصيانة{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">طلب الصيانة #{{ demande_maintenance.id }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="accordion" id="accordionDetails">
+                <!-- Section Détails -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            التفاصيل
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionDetails">
+                        <div class="accordion-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>المؤسسة</th>
+                                        <td>{{ demande_maintenance.etablissement.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>المسؤول</th>
+                                        <td>{{ demande_maintenance.responsableDemande.nomp }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>الوصف</th>
+                                        <td>{{ demande_maintenance.description }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>النوع</th>
+                                        <td>{{ demande_maintenance.type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>الأولوية</th>
+                                        <td>
+                                            <span class="badge 
+                                                {% if demande_maintenance.priorite == 'faible' %}bg-secondary
+                                                {% elseif demande_maintenance.priorite == 'moyenne' %}bg-info
+                                                {% elseif demande_maintenance.priorite == 'haute' %}bg-warning
+                                                {% elseif demande_maintenance.priorite == 'critique' %}bg-danger
+                                                {% endif %}">
+                                                {% if demande_maintenance.priorite == 'faible' %}
+                                                    منخفضة
+                                                {% elseif demande_maintenance.priorite == 'moyenne' %}
+                                                    متوسطة
+                                                {% elseif demande_maintenance.priorite == 'haute' %}
+                                                    مرتفعة
+                                                {% elseif demande_maintenance.priorite == 'critique' %}
+                                                    حرجة
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>الحالة</th>
+                                        <td>
+                                            <span class="badge 
+                                                {% if demande_maintenance.statut == 'envoyee' %}bg-secondary
+                                                {% elseif demande_maintenance.statut == 'en_cours' %}bg-warning
+                                                {% elseif demande_maintenance.statut == 'resolue' %}bg-success
+                                                {% elseif demande_maintenance.statut == 'reportee' %}bg-info
+                                                {% elseif demande_maintenance.statut == 'rejetee' %}bg-danger
+                                                {% endif %}">
+                                                {% if demande_maintenance.statut == 'envoyee' %}
+                                                    مرسلة
+                                                {% elseif demande_maintenance.statut == 'en_cours' %}
+                                                    قيد المعالجة
+                                                {% elseif demande_maintenance.statut == 'resolue' %}
+                                                    محلولة
+                                                {% elseif demande_maintenance.statut == 'reportee' %}
+                                                    مؤجلة
+                                                {% elseif demande_maintenance.statut == 'rejetee' %}
+                                                    مرفوضة
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <td>{{ demande_maintenance.dateCreation ? demande_maintenance.dateCreation|date('Y-m-d H:i') : 'N/A' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section ردود الفنيين -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            ردود الفنيين
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDetails">
+                        <div class="accordion-body">
+                            {% if demande_maintenance.reponsesTechniques|length > 0 %}
+                                {% for reponse in demande_maintenance.reponsesTechniques %}
+                                    <div class="card mb-2">
+                                        <div class="card-body">
+                                            <p class="card-text">{{ reponse.contenu }}</p>
+                                            <small class="text-muted">
+                                                بواسطة: {{ reponse.technicien.nomp }}<br>
+                                                بتاريخ: {{ reponse.dateReponse ? reponse.dateReponse|date('Y-m-d H:i') }}
+                                            </small>
+                                            
+                                            {% if app.user and ('ROLE_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_TECH' in app.user.roles) %}
+                                                <div class="mt-2">
+                                                    <a href="{{ path('app_reponse_technique_edit', {'id': reponse.id}) }}" class="btn btn-sm btn-warning">تعديل</a>
+                                                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ reponse.id }}">حذف</button>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>لا توجد ردود حتى الآن.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                {% if is_granted('ROLE_TECH') and demande_maintenance.statut != 'resolue' %}
+                    <a class="btn btn-primary" href="{{ path('app_demande_maintenance_edit', {'id': demande_maintenance.id}) }}">تعديل</a>
+                {% endif %}
+                <a class="btn btn-secondary" href="{{ path('app_demande_maintenance_index') }}">عودة إلى القائمة</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

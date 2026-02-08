@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DocumentSeance{% endblock %}
+
+{% block body %}
+    <h1>DocumentSeance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ document_seance.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ document_seance.nom }}</td>
+            </tr>
+            <tr>
+                <th>Fichier</th>
+                <td>{{ document_seance.fichier }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_document_seance_index') }}">back to list</a>
+
+    <a href="{{ path('app_document_seance_edit', {'id': document_seance.id}) }}">edit</a>
+
+    {{ include('document_seance/_delete_form.html.twig') }}
+{% endblock %}

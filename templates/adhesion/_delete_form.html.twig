@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('app_adhesion_delete', {'id': adhesion.id}) }}" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا العنصر؟');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ adhesion.id) }}">
+    <button class="btn btn-danger">
+        <i class="bi bi-trash"></i> حذف
+    </button>
+</form>

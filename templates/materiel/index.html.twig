@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inventaire de Matériel{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h1 class="mb-0">📦 جرد الأثاث</h1>
+				<a href="{{ path('materiel_new') }}" class="btn btn-light">
+					<i class="bi bi-plus-circle"></i>
+					إضافة مادة جديدة
+				</a>
+			</div>
+			<div class="card-body p-0">
+				{% if matériels is not empty %}
+					<div class="table-responsive">
+						<table class="table table-hover align-middle" id="materielTable">
+							<thead class="table-light">
+								<tr>
+									<th>المعرف</th>
+									<th>الإسم</th>
+									<th>تاريخ الإدخال</th>
+									<th>المؤسسة</th>
+									<th>المكان</th>
+									<th>الحالة</th>
+									<th style="width:30px">#</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for m in matériels %}
+									<tr style="font-size:14px">
+										<td>{{ m.libelleMateriel.reference }}</td>
+										<td>{{ m.libelleMateriel.nom ?? 'N/A' }}</td>
+										{# <td>{{m.serie ?: 'Non spécifié'}}</td> #}
+										<td>{{ m.dateAcquisition ? m.dateAcquisition|date('Y-m-d') : '—' }}</td>
+										<td>{{ m.etablissement.nom }}</td>
+										<td>{{ m.emplacement ?: 'Non spécifié' }}</td>
+										<td>
+											<span class="badge bg-{{ m.etat == 'neuf' ? 'success' : 'warning' }}">
+												{{ m.etat }}
+											</span>
+										</td>
+										<td>
+											{% if action_control.canShow('update_materiel') %}
+												<a href="{{ path('materiel_edit', {'id': m.id}) }}" class="btn btn-sm btn-outline-primary">
+													<i class="bi bi-pencil"></i>
+												</a>
+											{% endif %}
+											{% if action_control.canShow('delete_materiel') %}
+												<form method="post" action="{{ path('materiel_delete', {'id': m.id}) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce matériel ?');">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ m.id) }}">
+													<button class="btn btn-sm btn-outline-danger">
+														<i class="bi bi-trash"></i>
+													</button>
+												</form>
+											{% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="text-center py-4 text-muted">Aucun matériel trouvé.</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () { // Initialiser DataTables avec traduction arabe
+new DataTable('#materielTable', {
+language: {
+"sProcessing": "جارٍ التحميل...",
+"sLengthMenu": "أظهر _MENU_ مدخلات",
+"sZeroRecords": "لم يُعثر على نتائج",
+"sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+"sInfoEmpty": "إظهار 0 إلى 0 من أصل 0 مدخل",
+"sInfoFiltered": "(من أصل _MAX_ مدخل)",
+"sSearch": "بحث:",
+"oPaginate": {
+"sFirst": "الأول",
+"sPrevious": "السابق",
+"sNext": "التالي",
+"sLast": "الأخير"
+}
+},
+paging: true,
+pageLength: 10,
+searching: true,
+info: true,
+order: [
+[0, 'asc']
+]
+});
+});
+	</script>
+{% endblock %}
+=======
+{% include "layout/header.html.twig" %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>📦 جرد الأثاث</h1>
+        <a href="{{ path('materiel_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> إضافة مادة جديدة
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            {% if matériels is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="materielTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Référence</th>
+                                <th>Nom</th>
+                                <th>Date d'acquisition</th>
+                                <th>Établissement</th>
+                                <th>Emplacement</th> <!-- Ajouter dans le tableau -->
+                                <th>État</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in matériels %}
+                                <tr>
+                                    <td>{{ m.reference }}</td>
+                                    <td>{{ m.nom }}</td>
+                                    <td>{{ m.dateAcquisition ? m.dateAcquisition|date('Y-m-d') : '—' }}</td>
+                                    <td>{{ m.etablissement.nom }}</td>
+                                    <td>{{ m.emplacement ?: 'Non spécifié' }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ m.etat == 'neuf' ? 'success' : 'warning' }}">
+                                            {{ m.etat }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('materiel_edit', {'id': m.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="post" action="{{ path('materiel_delete', {'id': m.id}) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce matériel ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ m.id) }}">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">Aucun matériel trouvé.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialiser DataTables avec traduction arabe
+    new DataTable('#materielTable', {
+        language: {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يُعثر على نتائج",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "إظهار 0 إلى 0 من أصل 0 مدخل",
+            "sInfoFiltered": "(من أصل _MAX_ مدخل)",
+            "sSearch": "بحث:",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            }
+        },
+        paging: true,
+        pageLength: 15,
+        searching: true,
+        info: true,
+        order: [[0, 'asc']]
+    });
+});
+</script>
+{% endblock %}
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تقرير توزيع المشتريات</title>
+    <style>
+        body { 
+            font-family: "Tajawal", sans-serif; 
+            padding: 20px; 
+            position: relative; 
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50"><text x="50%" y="50%" font-size="10" fill="rgba(0,0,0,0.05)" text-anchor="middle" alignment-baseline="middle">BadrSoftwareDev - منظومة بدر للخدمات الإدارية</text></svg>');
+            background-repeat: repeat;
+            background-size: 300px 100px;
+        }
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            text-align: center;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 4px 1px;
+            border: 1px solid #ddd;
+            line-height: 1.6;
+        }
+        .styled-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .styled-table td {
+            color: #333;
+            font-size: 14px;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 15px;
+        }
+        .header-table td {
+            padding: 8px;
+        }
+        .header-info {
+            font-weight: bold;
+            font-size: 19px;
+        }
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signatory {
+            text-align: center;
+            width: 45%;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+                window.close();
+            };
+        };
+    </script>
+</head>
+<body>
+    <table class="header-table">
+        <tr>
+            <td style="text-align: right;">
+                <div style="font-size=10px;">
+                    الجمهورية التونسية<br>
+                    وزارة الشباب و الرياضة<br>
+                    المندوبية الجهوية بمدنين
+                </div>
+            </td>
+            <td style="text-align: center;">
+                
+            </td>
+            <td style="text-align: left;">
+                
+            </td>
+        </tr>
+    </table>
+    <div class="header-info" style="text-align:center;">
+        تقرير توزيع المشتريات الجماعية<br>
+        {{ chapitre.nom }} - {{ etablissement.nom }}
+    </div>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>العنصر</th>
+                <th>الكمية المطلوبة</th>
+                <th>الكمية المسلمة</th>
+                <th>ملاحظات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for achat in achats %}
+            <tr>
+                <td style="text-align:right;">{{ achat.article_nom }}</td>
+                <td>{{ achat.quantite_demandee }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="background-color:#fdecea; color:#e74c3c; font-weight:bold;">لا توجد مشتريات</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="signature-section">
+        <div class="signatory">
+            <p>توقيع أمين المخزن</p>
+            <div style="height: 50px;"></div>
+        </div>
+        <div class="signatory">
+            <p>توقيع مسؤول المؤسسة</p>
+            <div style="height: 50px;"></div>
+        </div>
+    </div>
+</body>
+</html>

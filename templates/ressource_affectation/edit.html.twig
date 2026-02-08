@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la ressource affectée{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">✏️ تحديث </h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-primary mt-3">تحديث</button>
+            {{ form_end(form) }}
+
+            <a href="{{ path('app_ressource_affectation_index') }}" class="btn btn-secondary mt-2">العودة إلى القائمة</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

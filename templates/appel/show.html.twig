@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appel{% endblock %}
+
+{% block body %}
+    <h1>Appel</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ appel.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ appel.type }}</td>
+            </tr>
+            <tr>
+                <th>DateAppel</th>
+                <td>{{ appel.dateAppel ? appel.dateAppel|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HeureAppel</th>
+                <td>{{ appel.heureAppel ? appel.heureAppel|date('H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appel_index') }}">back to list</a>
+
+    <a href="{{ path('app_appel_edit', {'id': appel.id}) }}">edit</a>
+
+    {{ include('appel/_delete_form.html.twig') }}
+{% endblock %}

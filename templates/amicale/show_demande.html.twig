@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تفاصيل الطلب{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">تفاصيل الطلب</h2>
+						<p class="mb-0 text-light">استعرض تفاصيل الطلب أدناه</p>
+					</div>
+					<div class="card-body p-5">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<th class="text-end w-25">العرض</th>
+									<td class="w-75"><strong>{{ demande.offre.nom }}</strong></td>
+								</tr>
+								<tr>
+									<th class="text-end">المستخدم</th>
+									<td>{{ demande.beneficiaire.nomp }}</td>
+								</tr>
+								<tr>
+									<th class="text-end">التاريخ</th>
+									<td>{{ demande.dateDemande|date('Y-m-d H:i') }}</td>
+								</tr>
+								<tr>
+									<th class="text-end">الحالة</th>
+									<td>
+										<span class="badge 
+											{% if demande.statut == 'en_attente' %}bg-warning
+											{% elseif demande.statut == 'valide' %}bg-success
+											{% elseif demande.statut == 'refuse' %}bg-danger
+											{% elseif demande.statut == 'paye' %}bg-info
+											{% else %}bg-secondary
+											{% endif %}">
+											{% if demande.statut == 'en_attente' %}
+												في الانتظار
+											{% elseif demande.statut == 'valide' %}
+												مقبول
+											{% elseif demande.statut == 'refuse' %}
+												مرفوض
+											{% elseif demande.statut == 'paye' %}
+												مدفوع
+											{% else %}
+												غير معروف
+											{% endif %}
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th class="text-end">ملاحظات</th>
+									<td>{{ demande.commentaire|default('لا يوجد') }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+							<a href="{{ path('app_amicale_admin') }}" class="btn btn-outline-secondary me-md-2">
+								<i class="fas fa-arrow-left"></i> العودة إلى القائمة
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+		}
+		.table th {
+			font-weight: 600;
+			color: #495057;
+		}
+		.badge {
+			font-size: 0.85em;
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+
+{% endblock %}

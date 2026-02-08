@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الجمعيات الرياضية
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h2 class="mb-0">⚽ الجمعيات الرياضية</h2>
+				<a href="{{ path('app_association_sportif_new') }}" class="btn btn-light">
+					<i class="bi bi-plus-circle"></i>
+					إضافة جمعية
+				</a>
+			</div>
+			<div class="card-body">
+				{% if associations is not empty %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead class="table-light">
+								<tr>
+									<th scope="col">الرقم</th>
+									<th scope="col">الاسم</th>
+									<th scope="col">المعتمدية</th>
+									<th scope="col">القسم</th>
+									<th scope="col">العنوان</th>
+									<th scope="col">عدد المجازين</th>
+									<th scope="col">الإجراءات</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for association in associations %}
+									<tr>
+										<td>{{ association.id }}</td>
+										<td>{{ association.nom }}</td>
+										<td>{{ association.delegation.nom }}</td>
+										<td>{{ association.classeSportif.nom }}</td>
+										<td>{{ association.adresse }}</td>
+										<td>
+											ذكور:
+											{{ association.nombreMales ?: '0' }}
+											|
+											                    إناث:
+											{{ association.nombreFemelles ?: '0' }}
+										</td>
+										<td>
+											<a href="{{ path('app_association_sportif_show', {'id': association.id}) }}" class="btn btn-sm btn-info me-1">
+												<i class="bi bi-eye"></i>
+												عرض
+											</a>
+											<a href="{{ path('app_association_sportif_edit', {'id': association.id}) }}" class="btn btn-sm btn-warning me-1">
+												<i class="bi bi-pencil"></i>
+												تعديل
+											</a>
+                                            {% if is_granted('ROLE_ADMIN') %}
+											<a href="{{ path('app_association_sportif_delete', {'id': association.id}) }}" class="btn btn-sm btn-danger">
+												<i class="bi bi-trash"></i>
+												حذف
+											</a>
+                                            {% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="alert alert-info text-center border-info">
+						<i class="bi bi-info-circle"></i>
+						<p class="mb-0">لا توجد جمعيات رياضية.</p>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

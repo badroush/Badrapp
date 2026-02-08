@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}قائمة الأعضاء
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h2 class="mb-0">👥 قائمة الأعضاء</h2>
+				<a href="{{ path('adhesion_new') }}" class="btn btn-light">
+					<i class="bi bi-plus-circle"></i>
+					إضافة عضو جديد
+				</a>
+			</div>
+			<div class="card-body">
+				{% if adhesions is not empty %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead class="table-light">
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">الاسم</th>
+									<th scope="col">اللقب</th>
+									<th scope="col">المؤسسة</th>
+									<th scope="col">تاريخ الولادة</th>
+									<th scope="col">الرقم</th>
+									<th scope="col">سنة الانضمام</th>
+									<th scope="col">الصورة</th>
+									<th scope="col">الإجراءات</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for adhesion in adhesions %}
+									<tr>
+										<td>{{ adhesion.id }}</td>
+										<td>{{ adhesion.nom }}</td>
+										<td>{{ adhesion.prenom }}</td>
+										<td>{{ adhesion.etablissement ? adhesion.etablissement.nom : 'غير محدد' }}</td>
+										<td>{{ adhesion.dateNaissance ? adhesion.dateNaissance|date('Y-m-d') : '' }}</td>
+										<td>{{ adhesion.telephone }}</td>
+
+										{# <td>
+											{% if adhesion.etatCivil == 1 %}أعزب{% elseif adhesion.etatCivil == 2 %}متزوج{% elseif adhesion.etatCivil == 3 %}مطلق{% elseif adhesion.etatCivil == 4 %}أرمل
+											{% endif %}
+										</td> #}
+										<td>{{ adhesion.anneeAdhesion }}</td>
+										<td>
+											{% if adhesion.photo %}
+												<img src="{{ asset('uploads/photos/' ~ adhesion.photo) }}" alt="Photo" width="40" height="40" class="rounded-circle">
+											{% else %}
+												<span class="text-muted">لا توجد صورة</span>
+											{% endif %}
+										</td>
+										<td>
+											{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+												<a href="#" onclick="window.open('{{ path('adhesion_carte', {'id': adhesion.id}) }}', 'carte', 'width=300,height=190,scrollbars=no,resizable=no')" class="btn btn-sm btn-info">
+													<i class="bi bi-printer"></i>
+													طباعة
+												</a>
+												<a href="{{ path('app_adhesion_edit', {'id': adhesion.id}) }}" class="btn btn-sm btn-warning">
+													<i class="bi bi-pencil"></i>
+													تعديل
+												</a>
+												<a href="{{ path('adhesion_show', {'id': adhesion.id}) }}" class="btn btn-sm btn-info">
+													<i class="bi bi-eye"></i>
+													عرض
+												</a>
+												{% if adhesion.imprimer %}
+													{# <span class="badge bg-success">مطبوعة</span> #}
+                                                    <a href="{{ path('adhesion_imprimer', {'id': adhesion.id}) }}" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-printer"></i>
+                                                       
+														<span class="bi bi-check">مطبوعة</span>
+													</a>
+
+												{% else %}
+													<a href="{{ path('adhesion_imprimer', {'id': adhesion.id}) }}" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-printer"></i>
+														<span class="bi bi-check"></span>
+													</a>
+												{% endif %}
+												{# {{ include('adhesion/_delete_form.html.twig') }} #}
+											{% else %}
+												{% if not adhesion.valider %}
+													<a href="{{ path('app_adhesion_edit', {'id': adhesion.id}) }}" class="btn btn-sm btn-warning">
+														<i class="bi bi-pencil"></i>
+														تعديل
+													</a>
+													<a href="{{ path('adhesion_valider', {'id': adhesion.id}) }}" class="btn btn-sm btn-info">
+														<i class="bi bi-check"></i>
+														تحقق
+													</a>
+												{% else %}
+													{% if adhesion.imprimer %}
+														<span class="badge bg-success">مطبوعة / جاهزة</span>
+													{% else %}
+														<span class="badge bg-primary">في إنتظار الطباعة</span>
+													{% endif %}
+												{% endif %}
+											{% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="alert alert-info text-center">
+						<p class="mb-0">لا توجد أعضاء مسجلين حتى الآن.</p>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

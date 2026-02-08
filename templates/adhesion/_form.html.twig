@@ -1,0 +1,23 @@
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+    <div class="col-md-6">
+        {{ form_row(form.nom, {'label': 'الاسم'}) }}
+        {{ form_row(form.prenom, {'label': 'اللقب'}) }}
+        {{ form_row(form.dateNaissance, {'label': 'تاريخ الميلاد'}) }}
+        {{ form_row(form.adresse, {'label': 'العنوان'}) }}
+        {{ form_row(form.telephone, {'label': 'الهاتف'}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.etatCivil, {'label': 'الحالة الاجتماعية'}) }}
+        {{ form_row(form.anneeAdhesion, {'label': 'سنة الانضمام'}) }}
+        {{ form_row(form.dateAdhesion, {'label': 'تاريخ الانضمام'}) }}
+        {{ form_row(form.photo, {'label': 'الصورة (JPEG/PNG)'}) }}
+    </div>
+    <div class="col-12">
+        {{ form_row(form.etablissement, {'label': 'المؤسسة'}) }}
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success">
+            <i class="bi bi-save"></i> {{ button_label|default('حفظ') }}
+        </button>
+    </div>
+{{ form_end(form) }}

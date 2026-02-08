@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إضافة عرض جديد
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1>إضافة عرض جديد</h1>
+
+		{{ form_start(form) }}
+		{{ form_row(form.nom, {'label': 'الاسم'}) }}
+		{{ form_row(form.description, {'label': 'الوصف'}) }}
+		{{ form_row(form.dateDebut, {'label': 'من'}) }}
+		{{ form_row(form.dateFin, {'label': 'إلى'}) }}
+		{{ form_row(form.dureeEnMois) }}
+		{{ form_row(form.montantParMois) }}
+		{{ form_row(form.fraisInscription) }}
+        {{ form_row(form.annee) }}
+		{{ form_row(form.etat, {'label': 'الحالة'}) }}
+		{% if form.vars.value.dureeEnMois %}
+			<div class="alert alert-info">
+				المبلغ الإجمالي:
+				{{ form.vars.value.total|number_format(3, '.', ',') }}
+			</div>
+		{% endif %}
+		<button class="btn btn-primary mt-3">إضافة</button>
+		{{ form_end(form) }}
+
+		<a href="{{ path('app_amicale_admin') }}" class="btn btn-secondary mt-2">العودة إلى الإدارة</a>
+	</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الميزانية العامة{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">📋 الميزانية العامة</h2>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h5>الجمهورية التونسية</h5>
+                            <h6>وزارة الشباب و الرياضة</h6>
+                            <h6>المندوبية الجهوية بمدنين</h6>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>الكود</th>
+                                        <th>الفصل</th>
+                                        <th>المبلغ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for budget in budgets %}
+                                        <tr>
+                                            <td>{{ budget.chapitreBudget.code }}</td>
+                                            <td>{{ budget.chapitreBudget.nom }}</td>
+                                            <td>{{ budget.total_montant|number_format(3, '.', ',') }} DT</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('app_rapports_index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                العودة
+                            </a>
+                            <button onclick="window.print()" class="btn btn-success">
+                                <i class="fas fa-print me-2"></i>
+                                طباعة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الجلسات العامة{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📅 الجلسات العامة</h2>
+            <a href="{{ path('app_seance_plenaire_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة جلسة
+            </a>
+        </div>
+        <div class="card-body">
+            {% if seances is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">الرقم</th>
+                                <th scope="col">الجمعية</th>
+                                <th scope="col">التاريخ</th>
+                                <th scope="col">النوع</th>
+                                <th scope="col">الوثائق</th>
+                                <th scope="col">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for seance in seances %}
+                                <tr>
+                                    <td>{{ seance.id }}</td>
+                                    <td>{{ seance.association.nom }}</td>
+                                    <td>{{ seance.date|date('Y-m-d') }}</td>
+                                    <td>{{ seance.type }}</td>
+                                    <td>
+                                        {% for document in seance.documents %}
+                                            <a href="{{ asset('uploads/documents/' ~ document.fichier) }}" target="_blank" class="badge bg-info me-1">
+                                                {{ document.nom }}
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('app_seance_plenaire_show', {'id': seance.id}) }}" class="btn btn-sm btn-info me-1">
+                                            <i class="bi bi-eye"></i> عرض
+                                        </a>
+                                        <a href="{{ path('app_seance_plenaire_edit', {'id': seance.id}) }}" class="btn btn-sm btn-warning me-1">
+                                            <i class="bi bi-pencil"></i> تعديل
+                                        </a>
+                                        <a href="{{ path('app_seance_plenaire_delete', {'id': seance.id}) }}" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i> حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center border-info">
+                    <i class="bi bi-info-circle"></i>
+                    <p class="mb-0">لا توجد جلسات عامة.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

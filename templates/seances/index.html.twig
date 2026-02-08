@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الجلسات العامة{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📅 الجلسات العامة</h2>
+            <a href="{{ path('app_seance_plenaire_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة جلسة
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Barre de recherche -->
+            <form method="GET" action="{{ path('app_seance_plenaire_index') }}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" value="{{ app.request.query.get('q') }}" placeholder="البحث عن طريق الجمعية أو التاريخ أو النوع" class="form-control">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> بحث
+                    </button>
+                </div>
+            </form>
+
+            <!-- Liste des séances -->
+            <div class="row">
+                {% for seance in seances %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">{{ seance.association.nom }}</h5>
+                                <p class="card-text">
+                                    <i class="bi bi-calendar text-info"></i> {{ seance.date|date('Y-m-d') }}<br>
+                                    <i class="bi bi-tag text-warning"></i> {{ seance.type }}<br>
+                                    <small class="text-muted">
+                                        <strong>الوثائق:</strong><br>
+                                        {% for document in seance.documents %}
+                                            <a href="{{ asset('uploads/documents/' ~ document.fichier) }}" target="_blank" class="badge bg-info me-1">
+                                                {{ document.nom }}
+                                            </a>
+                                        {% endfor %}
+                                    </small>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <a href="{{ path('app_seance_plenaire_show', {'id': seance.id}) }}" class="btn btn-sm btn-info me-2">
+                                    <i class="bi bi-eye"></i> عرض
+                                </a>
+                                <a href="{{ path('app_seance_plenaire_edit', {'id': seance.id}) }}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil"></i> تعديل
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i>
+                            <p class="mb-0">لا توجد جلسات عامة.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

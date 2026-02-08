@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}عرض عنصر سلة المشتريات الجماعية{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">🔍 عرض عنصر سلة المشتريات الجماعية</h2>
+                        <p class="mb-0 text-light">تفاصيل العنصر</p>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">الرقم:</label>
+                            <p class="form-control-plaintext">{{ item_panier_achat_collectif.id }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">ال Panier:</label>
+                            <p class="form-control-plaintext">{{ item_panier_achat_collectif.panier.id }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">ال Article:</label>
+                            <p class="form-control-plaintext">{{ item_panier_achat_collectif.detailAchatCollectif.article.nom }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">الكمية:</label>
+                            <p class="form-control-plaintext">{{ item_panier_achat_collectif.quantite }}</p>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{{ path('app_item_panier_achat_collectif_index') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-arrow-left"></i>
+                                العودة إلى القائمة
+                            </a>
+                            <a href="{{ path('app_item_panier_achat_collectif_edit', {'id': item_panier_achat_collectif.id}) }}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> تعديل
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}

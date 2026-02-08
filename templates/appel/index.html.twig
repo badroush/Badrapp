@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}سجل المكالمات
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h2 class="mb-0">📞 سجل المكالمات</h2>
+			</div>
+			<div
+				class="card-body">
+				<!-- Formulaire de filtres -->
+				<div class="row mb-4">
+					<div class="col-md-12">
+						{{ form_start(filterForm, {'method': 'GET'}) }}
+						<div class="row">
+							<div class="col-md-3">{{ form_row(filterForm.dateDebut) }}</div>
+							<div class="col-md-3">{{ form_row(filterForm.dateFin) }}</div>
+							<div class="col-md-3">{{ form_row(filterForm.contact) }}</div>
+							<div class="col-md-3">{{ form_row(filterForm.type) }}</div>
+						</div>
+                        <br>
+						<div class="row">
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-primary">
+									<i class="bi bi-filter"></i>
+									تصفية
+								</button>
+								<a href="{{ path('app_appel_index') }}" class="btn btn-secondary">
+									<i class="bi bi-x"></i>
+									مسح
+								</a>
+								<!-- Dans la section filtres -->
+								<a href="{{ path('app_appel_export', app.request.query.all) }}" class="btn btn-success ms-2">
+									<i class="bi bi-download"></i>
+									تصدير
+								</a>
+							</div>
+						</div>
+						{{ form_end(filterForm) }}
+					</div>
+				</div>
+
+				<!-- Tableau des appels -->
+				<table class="table table-hover">
+					<thead class="table-light">
+						<tr>
+							<th>الجهة المُرسلة</th>
+							<th>الجهة المستقبلة</th>
+							<th>نوع المكالمة</th>
+							<th>التاريخ</th>
+							<th>الوقت</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for appel in appels %}
+							<tr>
+								<td>{{ appel.contactEmetteur.nom }}
+									({{ appel.contactEmetteur.numero }})</td>
+								<td>{{ appel.contactRecepteur.nom }}
+									({{ appel.contactRecepteur.numero }})</td>
+								<td>
+									{% if appel.type == 'entrant' %}
+										<span class="badge bg-info">واردة</span>
+									{% else %}
+										<span class="badge bg-warning">صادرة</span>
+									{% endif %}
+								</td>
+								<td>{{ appel.dateAppel|date('Y-m-d') }}</td>
+								<td>{{ appel.heureAppel|date('H:i') }}</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5" class="text-center">لا توجد مكالمات.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إضافة ميزانية{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">➕ إضافة نفقة جديدة</h2>
+        </div>
+        <div class="card-body">
+            {% if total_affecte is defined %}
+                <div class="card mb-4 border-left-primary">
+                    <div class="card-body">
+                        <p><strong>الموارد المخصصة للمؤسسة :</strong> {{ total_affecte|number_format(3, '.', ',') }}</p>
+                        <p><strong>الميزانية الحالية :</strong> {{ budgets_existants|number_format(3, '.', ',') }}</p>
+                        <p class="{% if reste_disponible < 0 %}text-danger{% else %}text-success{% endif %}">
+                            <strong>المتبقي :</strong> {{ reste_disponible|number_format(3, '.', ',') }}
+                        </p>
+                    </div>
+                </div>      
+            {% endif %}
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.idChapitre, {'label': 'القسم'}) }}
+                        {{ form_row(form.idEtablissement, {'label': 'المؤسسة'}) }}
+                        {{ form_row(form.montant, {'label': 'المبلغ'}) }}
+                    </div>
+                    <div class="col-md-6">
+                        <!-- valeur par defaut this year -->
+                        {{ form_row(form.annee, {'label': 'السنة'}) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success mt-3">
+                    <i class="bi bi-save"></i> حفظ الميزانية
+                </button>
+                <a href="{{ path('app_budget_index') }}" class="btn btn-secondary mt-3">
+                    <i class="bi bi-arrow-return-left"></i> عودة
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

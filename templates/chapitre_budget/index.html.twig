@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إدارة فصول الميزانية{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">📑 إدارة فصول الميزانية</h3>
+            <a href="{{ path('app_chapitre_budget_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة فصل
+            </a>
+        </div>
+        <div class="card-body p-0">
+            {% if chapitre_budgets is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="chapitreBudgetTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>الرمز</th>
+                                <th>الاسم</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for chapitre in chapitre_budgets %}
+                                <tr>
+                                    <td>{{ chapitre.code }}</td>
+                                    <td>{{ chapitre.nom }}</td>
+                                    <td>
+                                        <a href="{{ path('app_chapitre_budget_edit', {'id': chapitre.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="post" action="{{ path('app_chapitre_budget_delete', {'id': chapitre.id}) }}" style="display: inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا الفصل؟');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chapitre.id) }}">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">لا توجد فصول.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    new DataTable('#chapitreBudgetTable', {
+        language: {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يُعثر على نتائج",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "إظهار 0 إلى 0 من أصل 0 مدخل",
+            "sInfoFiltered": "(من أصل _MAX_ مدخل)",
+            "sSearch": "بحث:",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            }
+        },
+        paging: true,
+        pageLength: 10,
+        searching: true,
+        info: true,
+        order: [[0, 'asc']]
+    });
+});
+</script>
+{% endblock %}

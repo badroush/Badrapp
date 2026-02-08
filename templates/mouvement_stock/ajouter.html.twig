@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إضافة حركة مخزون{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">➕ إضافة حركة مخزون جديدة</h2>
+=======
+{% include "layout/header.html.twig" %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>➕ إضافة حركة مخزون جديدة</h2>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+        </div>
+        <div class="card-body">
+        {{ form_start(form, {
+    'attr': {'id': 'mouvementForm', 'data-action': path('mouvement_create_ajax')}
+}) }}
+                <div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.dateMouvement) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.article) }}
+        {{ form_row(form.quantite) }}
+    </div>
+    <div class="col-md-6">
+        <div id="fournisseur-field" class="mb-3" style="display:none;">
+            {{ form_label(form.fournisseur) }}
+            {{ form_widget(form.fournisseur, {'attr': {'class': 'form-control select2-entity'}}) }}
+        </div>
+
+        <div id="beneficiaire-field" class="mb-3" style="display:none;">
+            {{ form_label(form.beneficiaire) }}
+            {{ form_widget(form.beneficiaire, {'attr': {'class': 'form-control select2-entity'}}) }}
+        </div>
+    </div>
+</div>
+
+                <button type="submit" class="btn btn-success mt-3">
+                    <i class="bi bi-save"></i> تسجيل الحركة
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+<<<<<<< HEAD
+</div>
+{% endblock %}
+=======
+
+
+
+</div>
+{% endblock %}
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

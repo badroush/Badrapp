@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إتصال أنترنات{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">إتصال أنترنات</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>المعرف</th>
+                        <td>{{ connexion_internet.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>المؤسسة</th>
+                        <td>{{ connexion_internet.etablissement.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>نوع الاتصال</th>
+                        <td>{{ connexion_internet.typeConnexion }}</td>
+                    </tr>
+                    <tr>
+                        <th>مرجع المودم</th>
+                        <td>{{ connexion_internet.referenceModem }}</td>
+                    </tr>
+                    <tr>
+                        <th>رقم الخط</th>
+                        <td>{{ connexion_internet.numeroLigne }}</td>
+                    </tr>
+                    <tr>
+                        <th>السرعة</th>
+                        <td>{{ connexion_internet.debit }}</td>
+                    </tr>
+                    <tr>
+                        <th>تاريخ بداية الخدمة</th>
+                        <td>{{ connexion_internet.datemiseenmarche ? connexion_internet.datemiseenmarche|date('Y-m-d') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>المزود</th>
+                        <td>{{ connexion_internet.fournisseur }}</td>
+                    </tr>
+                    <tr>
+                        <th>الحالة</th>
+                        <td>
+                            <span class="badge 
+                                {% if connexion_internet.etatConnexion == 'active' %}bg-success
+                                {% elseif connexion_internet.etatConnexion == 'panne' %}bg-danger
+                                {% elseif connexion_internet.etatConnexion == 'suspendue' %}bg-warning
+                                {% endif %}">
+                                {% if connexion_internet.etatConnexion == 'active' %}
+                                    نشطة
+                                {% elseif connexion_internet.etatConnexion == 'panne' %}
+                                    معطلة
+                                {% elseif connexion_internet.etatConnexion == 'suspendue' %}
+                                    معلقة
+                                {% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between mt-3">
+                <a class="btn btn-primary" href="{{ path('app_connexion_internet_edit', {'id': connexion_internet.id}) }}">تعديل</a>
+                <a class="btn btn-secondary" href="{{ path('app_connexion_internet_index') }}">العودة إلى القائمة</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

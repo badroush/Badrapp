@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}سلتي
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row" style="width:100%">
+			<div class="col-12">
+				<div class="card shadow-lg border-2">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">🛒 شراءاتي</h2>
+						<p class="mb-0 text-light">قائمة المواد المختارة</p>
+					</div>
+					<div class="card-body p-5">
+						{% if paniers is not empty %}
+							<div class="table-responsive">
+								<table id="panierTable" class="table table-hover table-bordered">
+									<thead class="table-light">
+										<tr>
+											{% if is_granted('ROLE_ADMIN') %}
+												<th>المؤسسة</th>
+											{% endif %}
+											<th>الفصل</th>
+											<th>المادة</th>
+											<th>السعر</th>
+											<th>الكمية</th>
+											<th>الإجمالي</th>
+											<th>الإجراءات</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for panier in paniers %}
+											{% for item in panier.items %}
+												<tr>
+													{% if is_granted('ROLE_ADMIN') %}
+														<td>{{ panier.etablissement.nom }}</td>
+													{% endif %}
+													<td>{{ item.detailAchatCollectif.chapitreAchatsCollectif.nom }}</td>
+													<td>{{ item.detailAchatCollectif.article.nom }}</td>
+													<td>{{ item.detailAchatCollectif.prixVente|number_format(3, '.', ',') }}</td>
+													<td>{{ item.quantite }}</td>
+													<td>{{ (item.quantite * item.detailAchatCollectif.prixVente)|number_format(3, '.', ',') }}</td>
+													<td>
+														<form method="post" action="{{ path('app_achats_collectifs_item_delete', {'id': item.id}) }}" style="display: inline;">
+															<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">
+																<i class="fas fa-trash">حذف</i>
+															</button>
+														</form>
+													</td>
+												</tr>
+											{% endfor %}
+										{% endfor %}
+									</tbody>
+									<tfoot class="table-light">
+										<tr>
+											{% if is_granted('ROLE_ADMIN') %}
+												<th>الإجمالي</th>
+											{% endif %}
+											<th colspan="{% if is_granted('ROLE_ADMIN') %}5{% else %}5{% endif %}" class="text-end">المجموع:</th>
+											<th>
+												{% set total = 0 %}
+												{% for panier in paniers %}
+													{% for item in panier.items %}
+														{% set total = total + (item.quantite * item.detailAchatCollectif.prixVente) %}
+													{% endfor %}
+												{% endfor %}
+												{{ total|number_format(3, '.', ',') }}
+											</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						{% else %}
+							<div class="alert alert-info text-center">
+								<i class="fas fa-shopping-cart fa-2x mb-3"></i>
+								<p class="mb-0">سلتك فارغة</p>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+
+	{% if paniers is not empty %}
+		<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+		<script>
+			$(document).ready(function () {
+$('#panierTable').DataTable({
+"language": {
+"url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/ar.json"
+},
+"pageLength": 10,
+"lengthMenu": [
+[
+5,
+10,
+25,
+50,
+-1
+],
+[
+5,
+10,
+25,
+50,
+"الكل"
+]
+],
+"order": [
+[0, "asc"]
+]
+});
+});
+		</script>
+	{% endif %}
+{% endblock %}

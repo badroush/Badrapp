@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delegation{% endblock %}
+
+{% block body %}
+    <h1>Delegation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ delegation.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ delegation.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_delegation_index') }}">back to list</a>
+
+    <a href="{{ path('app_delegation_edit', {'id': delegation.id}) }}">edit</a>
+
+    {{ include('delegation/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Delegation{% endblock %}
+
+{% block body %}
+    <h1>Edit Delegation</h1>
+
+    {{ include('delegation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_delegation_index') }}">back to list</a>
+
+    {{ include('delegation/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block title %}اتصالات الإنترنت{% endblock %}
+{% block body %}
+<div class="container-fluid mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">اتصالات الإنترنت</h3>
+            <a class="btn btn-light" href="{{ path('app_connexion_internet_new') }}">إنشاء اتصال جديد</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="connexionTable" class="table table-striped table-hover" style="width:100%">
+                    <thead class="table-dark">
+                        <tr style="text-align: center;">
+                            <th>مُعرف</th>
+                            <th>المؤسسة</th>
+                            <th>ن.الاتصال</th>
+                            <th>م.المودم</th>
+                            <th>ر.الخط</th>
+                            <th>السرعة</th>
+                            <th style="width: 60px;">ت.التفعيل</th>
+                            <th>المزود</th>
+                            <th>الحالة</th>
+                            <th style="width: 150px;">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for connexion in connexion_internets %}
+                        <tr style="vertical-align: middle; font-size: 15px;">
+                            <td>{{ connexion.id }}</td>
+                            <td>{{ connexion.etablissement.nom }}</td>
+                            <td>{{ connexion.typeConnexion }}</td>
+                            <td>{{ connexion.referenceModem }}</td>
+                            <td>{{ connexion.numeroLigne }}</td>
+                            <td>{{ connexion.debit }}</td>
+                            <td>{{ connexion.dateMiseEnMarche ? connexion.dateMiseEnMarche|date('Y-m-d') : '' }}</td>
+                            <td>{{ connexion.fournisseur }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if connexion.etatConnexion == 'active' %}bg-success
+                                    {% elseif connexion.etatConnexion == 'panne' %}bg-danger
+                                    {% elseif connexion.etatConnexion == 'suspendue' %}bg-warning
+                                    {% endif %}">
+                                    {% if connexion.etatConnexion == 'active' %}
+                                        نشطة
+                                    {% elseif connexion.etatConnexion == 'panne' %}
+                                        معطلة
+                                    {% elseif connexion.etatConnexion == 'suspendue' %}
+                                        معلقة
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_connexion_internet_show', {'id': connexion.id}) }}" class="btn btn-sm btn-info">عرض</a>
+                                <a href="{{ path('app_connexion_internet_edit', {'id': connexion.id}) }}" class="btn btn-sm btn-warning">تعديل</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="10" class="text-center">لا توجد اتصالات.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    // Initialiser DataTables
+	    new DataTable('#connexionTable', {
+	        language: { url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json    ' },
+	        paging: true,
+	        pageLength: 10,
+	        searching: true,
+	        info: true,
+	        order: [[0, 'asc']]
+	    });
+	});
+	</script>
+{% endblock %}

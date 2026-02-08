@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الرد على الطلب{% endblock %}
+
+{% block body %}
+<h1>الرد على الطلب #{{ demande_maintenance.id }}</h1>
+<form method="post">
+    <textarea name="reponse" class="form-control" placeholder="اكتب ردك هنا..." required></textarea>
+    <button type="submit" class="btn btn-success mt-2">إرسال الرد</button>
+</form>
+{% endblock %}

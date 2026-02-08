@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الرد الفني{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">الرد الفني</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>مُعرف</th>
+                        <td>{{ reponse_technique.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>الطلب</th>
+                        <td>{{ reponse_technique.getdemande.description}}</td>
+                    </tr>
+                    <tr>
+                        <th>الفني</th>
+                        <td>{{ reponse_technique.technicien.nomp }}</td>
+                    </tr>
+                    <tr>
+                        <th>المحتوى</th>
+                        <td>{{ reponse_technique.contenu }}</td>
+                    </tr>
+                    <tr>
+                        <th>التاريخ</th>
+                        <td>{{ reponse_technique.dateReponse ? reponse_technique.dateReponse|date('Y-m-d H:i') : 'N/A' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between mt-3">
+                <a class="btn btn-primary" href="{{ path('app_reponse_technique_edit', {'id': reponse_technique.id}) }}">تعديل</a>
+                <a class="btn btn-secondary" href="{{ path('app_reponse_technique_index') }}">عودة إلى القائمة</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

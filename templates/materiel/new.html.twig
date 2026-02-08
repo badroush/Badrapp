@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+<<<<<<< HEAD
+{% block title %}إضافة مادة جديدة{% endblock %}
+{% block stylesheets %}
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+rel="stylesheet" />
+{% endblock %}
+{% block body %}
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h2 class="mb-0">➕ إضافة مادة جديدة</h2>
+=======
+{% block title %}إضافة مادة جديدة
+{% endblock %}
+
+{% block body %}
+	{% include "layout/header.html.twig" %}
+	<div class="container mt-4">
+		<div class="card">
+			<div class="card-header">
+				<h2>➕ إضافة مادة جديدة</h2>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+			</div>
+			<div class="card-body">
+				{{ form_start(form) }}
+				<div class="row">
+					<div class="col-md-6">
+<<<<<<< HEAD
+						{# {{ form_row(form.reference, {'label': 'المرجع'}) }}
+						<br> #}
+						{{ form_row(form.libelleMateriel, {'label': 'اسم المادة'}) }}
+						<label id="libelleMateriel-selection-label" class="form-label mt-2 text-muted"> لم تحدد مادة </label>
+						{{ form_row(form.serie, {'label': 'الرقم التسلسلي'}) }}
+						{{ form_row(form.emplacement, {'label': 'الموقع'}) }}
+                        <label id="emplacement-selection-label" class="form-label mt-2 text-muted">لم تحدد موقع</label>
+=======
+						{{ form_row(form.reference, {'label': 'المرجع'}) }}
+						<br>
+						{{ form_row(form.nom, {'label': 'اسم المادة'}) }}
+						{# Label pour afficher la sélection #}
+						<label id="nom-selection-label" class="form-label mt-2 text-muted">
+							Aucune sélection
+						</label>
+						{{ form_row(form.emplacement, {'label': 'الموقع'}) }}
+                        <label id="emplacement-selection-label" class="form-label mt-2 text-muted">Aucune sélection</label>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+						{{ form_row(form.description, {'label': 'الوصف'}) }}
+						{{ form_row(form.nbr, {'label': 'الكمية', 'attr': {'class': 'form-control', 'type': 'number'}}) }}
+						{{ form_row(form.dateAcquisition, {'label': 'تاريخ الاقتناء'}) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_row(form.etat, {'label': 'الحالة'}) }}
+						{{ form_row(form.etablissement, {'label': 'المؤسسة'}) }}
+
+					</div>
+				</div>
+<<<<<<< HEAD
+				<button class="btn btn-success mt-3" type="submit">
+=======
+				<button class="btn btn-success mt-3">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+					<i class="bi bi-save"></i>
+					حفظ المادة
+				</button>
+				<a href="{{ path('materiel_index') }}" class="btn btn-secondary mt-3">
+					<i class="bi bi-arrow-return-left"></i>
+					عودة
+				</a>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+<<<<<<< HEAD
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> <!-- ✅ Avant Select2 -->
+	 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js  "></script>
+	<script>
+document.addEventListener("DOMContentLoaded", function() {
+    //console.log("✅ DOM chargé");
+
+    function initSelect2WithDisplay(selector, labelSelector, field) {
+        //console.log("✅ Initialisation de Select2 pour:", selector);
+
+        $(selector).select2({
+            placeholder: 'إبحث...',
+            ajax: {
+                url: '{{ path("materiel_search") }}',
+                dataType: 'json',
+                delay: 250,
+                tags: true,
+                data: function (params) {
+                    //console.log("🔍 Requête envoyée:", params.term);
+                    //console.log("🔍 field envoyée:", field);
+                    return {
+                        q: params.term,
+                        field: field
+                    };
+                },
+                processResults: function (data) {
+                    //console.log("🔍 Réponse reçue:", data);
+                    return {
+                        results: $.map(data, function (item) {
+                            let text = item.text || item.text;
+							let ids=item.id || item.id;
+							let reference=item.reference || item.reference;
+                            //console.log("Suggestion:", text);
+                            return { id: ids, text: text};
+                        })
+                    };
+                },
+                error: function(xhr, status, error) {
+                    //console.error("❌ Erreur AJAX:", status, error);
+                },
+                cache: true
+            },
+            minimumInputLength: 2,
+            theme: "bootstrap-5"
+        }).on('select2:select', function (e) {
+            // ✅ Mettre à jour le label avec la valeur sélectionnée
+            //console.log("Valeur sélectionnée:", e.params.data.text);
+            $(labelSelector).text(e.params.data.text); // Mettre à jour le label
+            $(selector).val(e.params.data.id).trigger('change'); // Mettre à jour le champ original (pour le formulaire)
+        }).on('select2:clear', function () {
+            // ✅ Réinitialiser le label si le champ est vidé
+            $(labelSelector).text('لم تحدد ' + field);
+        });
+    }
+
+    // ✅ Appliquer à tous les champs
+    initSelect2WithDisplay('#materiel_libelleMateriel', '#libelleMateriel-selection-label', 'nom'); // ✅ Nouveau champ
+    initSelect2WithDisplay('#materiel_emplacement', '#emplacement-selection-label', 'emplacement');
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+{% endblock %}
+=======
+	 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	 <script>
+		document.addEventListener("DOMContentLoaded", function() {
+		    //console.log("✅ DOM chargé");
+
+		    function initSelect2WithDisplay(selector, labelSelector, field) {
+		        //console.log("✅ Initialisation de Select2 pour:", selector);
+
+		        $(selector).select2({
+		            placeholder: 'Tapez pour rechercher...',
+		            ajax: {
+		                url: '{{ path("materiel_search") }}',
+		                dataType: 'json',
+		                delay: 250,
+                        tags: true,
+		                 data: function (params) {
+		                    //console.log("🔍 Requête envoyée:", params.term);
+                            //console.log("🔍 field envoyée:", field);
+		                    return {
+		                        q: params.term,
+		                        field: field
+		                    };
+		                },
+		                processResults: function (data) {
+		                    //console.log("🔍 Réponse reçue:", data);
+		                    return {
+		                       results: $.map(data, function (item) {
+	                            let text = item.id || item.text;
+	                           // console.log("Suggestion:", text);
+	                            return { id: text, text: text };
+	                        })
+		                    };
+		                },
+		                error: function(xhr, status, error) {
+		                    //console.error("❌ Erreur AJAX:", status, error);
+		                },
+		                cache: true
+		            },
+		            minimumInputLength: 2,
+		            theme: "bootstrap-5"
+		        }).on('select2:select', function (e) {
+	            // ✅ Mettre à jour le label avec la valeur sélectionnée
+	           // console.log("Valeur sélectionnée:", e.params.data.text);
+	            $(labelSelector).text(e.params.data.text); // Mettre à jour le label
+	            $(selector).val(e.params.data.id).trigger('change'); // Mettre à jour le champ original (pour le formulaire)
+	        }).on('select2:clear', function () {
+	            // ✅ Réinitialiser le label si le champ est vidé
+	            $(labelSelector).text('Aucune sélection');
+	        });
+		    }
+
+		    // Appliquer à chaque champ
+	    initSelect2WithDisplay('#materiel_nom', '#nom-selection-label', 'nom');
+	    initSelect2WithDisplay('#materiel_emplacement', '#emplacement-selection-label', 'emplacement');
+		});
+		</script>
+
+{% endblock %}
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

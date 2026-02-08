@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إنشاء تفاصيل مشتريات جماعية{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">➕ إنشاء تفاصيل مشتريات جماعية</h2>
+                        <p class="mb-0 text-light">املأ النموذج أدناه</p>
+                    </div>
+                    <div class="card-body p-5">
+                        {{ include('detail_achats_collectif/_form.html.twig', {'button_label': 'إنشاء'}) }}
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{{ path('app_detail_achats_collectif_index') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-arrow-left"></i>
+                                العودة إلى القائمة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .btn-lg {
+            padding: 10px 20px;
+        }
+    </style>
+{% endblock %}

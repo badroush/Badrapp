@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تعديل الملف
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">✏️ تعديل الملف</h2>
+					</div>
+					<div class="card-body p-5">
+						{{ form_start(form) }}
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.email) }}
+									{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.email) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.etablissement) }}
+									{{ form_widget(form.etablissement, {'attr': {'class': 'form-select'}}) }}
+									{{ form_errors(form.etablissement) }}
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.nomp) }}
+									{{ form_widget(form.nomp, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.nomp) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.matricule) }}
+									{{ form_widget(form.matricule, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.matricule) }}
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.cin) }}
+									{{ form_widget(form.cin, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.cin) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.grade) }}
+									{{ form_widget(form.grade, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.grade) }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									{{ form_label(form.avatar) }}
+									{{ form_widget(form.avatar, {'attr': {'class': 'form-control'}}) }}
+									{{ form_errors(form.avatar) }}
+								</div>
+							</div>
+						</div>
+
+						<div class="d-grid gap-2">
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-save me-2"></i>
+								حفظ التعديلات
+							</button>
+
+							<a href="{{ path('app_profile_show') }}" class="btn btn-outline-secondary">
+								<i class="fas fa-arrow-left me-2"></i>
+								العودة إلى الملف
+							</a>
+						</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			margin: 0;
+			border: none;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+{% endblock %}

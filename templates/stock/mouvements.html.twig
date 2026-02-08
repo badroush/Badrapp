@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+<<<<<<< HEAD
+{% block title %}سجل الحركات{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+				<h1 class="mb-0">📋 سجل الحركات</h1>
+				<a href="{{ path('mouvement_ajouter') }}" class="btn btn-light">
+					<i class="bi bi-plus-circle"></i>
+					إضافة حركة
+				</a>
+			</div>
+=======
+{% block title %}سجل الحركات
+{% endblock %}
+
+{% block body %}
+{% include "layout/header.html.twig" %}
+	<div class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>📋 سجل الحركات</h1>
+			<a href="{{ path('mouvement_ajouter') }}" class="btn btn-primary">
+				<i class="bi bi-plus-circle"></i>
+				إضافة حركة
+			</a>
+		</div>
+
+		<div class="card">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+			<div class="card-body p-0">
+				{% if mouvements is not empty %}
+					<div class="table-responsive">
+						<table class="table table-hover align-middle mb-0" id="mvtTable">
+							<thead class="table-light">
+								<tr>
+									<th>التاريخ</th>
+									<th>المنتج</th>
+									<th>النوع</th>
+									<th>الكمية</th>
+									<th>الطرف</th>
+<<<<<<< HEAD
+									<th>الإجراءات</th>
+=======
+                                    <th>الإجراءات</th>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+								</tr>
+							</thead>
+							<tbody>
+								{% for mvt in mouvements %}
+									<tr>
+										<td>{{ mvt.dateMouvement|date('Y-m-d H:i') }}</td>
+										<td>{{ mvt.article.nom }}</td>
+										<td>
+											{% if mvt.type == 'entree' %}
+												<span class="badge bg-success">📥 دخول</span>
+											{% else %}
+												<span class="badge bg-danger">📤 خروج</span>
+											{% endif %}
+										</td>
+										<td>
+											{% if mvt.type == 'entree' %}
+												+{{ mvt.quantite }}
+											{% else %}
+												-{{ mvt.quantite }}
+											{% endif %}
+										</td>
+										<td>
+											{% if mvt.fournisseur %}
+												<i class="bi bi-truck"></i>
+												{{ mvt.fournisseur.nom }}
+											{% elseif mvt.beneficiaire %}
+												<i class="bi bi-person"></i>
+												{{ mvt.beneficiaire.nom }}
+											{% else %}
+												—
+											{% endif %}
+										</td>
+										<td>
+											<button type="button" class="btn btn-sm btn-outline-danger delete-mouvement" data-id="{{ mvt.id }}" title="حذف الحركة">
+												<i class="bi bi-trash"></i>
+											</button>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="text-center py-4 text-muted">لا توجد حركات.</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+<<<<<<< HEAD
+{% block javascripts %} <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js  "></script>
+	 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js  "></script>
+	 <script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    new DataTable('#mvtTable', {
+	        language: { url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json  ' },
+=======
+{% block javascripts %} <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+	 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+	 <script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    new DataTable('#mvtTable', {
+	        language: { url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json' },
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+	        paging: true,
+	        pageLength: 25,
+	        searching: true,
+	        info: true,
+	        order: [[0, 'desc']]
+	    });
+	});
+	</script>
+<<<<<<< HEAD
+{% endblock %}
+=======
+{% endblock %}
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

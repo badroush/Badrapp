@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}كتابة رد على الطلب #{{ demande.id }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mt-4">كتابة رد على الطلب #{{ demande.id }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.contenu) }}
+        <input type="hidden" name="demande" value="{{ demande.id }}">
+        <input type="hidden" name="technicien" value="{{ app.user.id }}">
+        <div class="d-flex justify-content-between mt-3">
+            <a class="btn btn-secondary" href="{{ path('app_demande_maintenance_index') }}">إلغاء</a>
+            <button class="btn btn-success">{{ button_label|default('إرسال الرد') }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

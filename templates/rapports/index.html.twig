@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} تقارير {% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">📋 التقارير</h2>
+					</div>
+					<div class="card-body p-5">
+
+						<!-- Section Admin -->
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+						<div class="mb-5">
+							<h3 class="text-center mb-4 bg-primary text-white p-2 rounded">قسم المسؤول</h3>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير المستخدمين</h5>
+											<a href="{{ path('app_rapports_utilisateurs') }}" class="btn btn-success">
+												<i class="fas fa-file-pdf me-2"></i>
+												التقرير
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير المؤسسات</h5>
+											<a href="{{ path('app_rapports_etablissements') }}" class="btn btn-warning">
+												<i class="fas fa-file-pdf me-2"></i>
+												التقرير
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير الفصول</h5>
+											<a href="{{ path('app_rapports_chapitres') }}" class="btn btn-danger">
+												<i class="fas fa-file-pdf me-2"></i>
+												التقرير
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير الميزانية العامة</h5>
+											<a href="{{ path('app_rapports_budget_global') }}" class="btn btn-warning">
+												<i class="fas fa-file-pdf me-2"></i>
+												التقرير
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+
+						<!-- Section Utilisateurs -->
+						<div>
+							<h3 class="text-center mb-4 bg-success text-white p-2 rounded">قسم المستخدمين</h3>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير ميزانية المؤسسة</h5>
+											<a href="{{ path('app_rapports_budget_etablissement') }}" class="btn btn-info">
+												<i class="fas fa-file-pdf me-2"></i>
+												طباعة الميزانية
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card shadow-sm mb-4">
+										<div class="card-body text-center">
+											<h5>تقرير الشراءات الجماعية</h5>
+											<a href="{{ path('rapports_achats_collectifs') }}" class="btn btn-primary">
+												<i class="fas fa-file-pdf me-2"></i>
+												طباعة الشراءات الجماعية
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تسجيل مكالمة{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📞 تسجيل مكالمة</h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.contactEmetteur, {'label': 'الجهة المُرسلة'}) }}
+                        {{ form_row(form.contactRecepteur, {'label': 'الجهة المستقبلة'}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.type, {'label': 'نوع المكالمة'}) }}
+                        {{ form_row(form.dateAppel, {'label': 'تاريخ المكالمة'}) }}
+                        {{ form_row(form.heureAppel, {'label': 'وقت المكالمة'}) }}
+                    </div>
+                </div>
+                <button class="btn btn-success">
+                    <i class="bi bi-save"></i> حفظ
+                </button>
+                <a href="{{ path('app_appel_index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-return-left"></i> عودة
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

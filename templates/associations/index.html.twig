@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الجمعيات الرياضية{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">⚽ الجمعيات الرياضية</h2>
+            <a href="{{ path('app_association_sportif_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة جمعية
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Barre de recherche -->
+            <form method="GET" action="{{ path('app_association_sportif_index') }}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" value="{{ app.request.query.get('q') }}" placeholder="البحث عن طريق الاسم أو المندوبية" class="form-control">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> بحث
+                    </button>
+                </div>
+            </form>
+
+            <!-- Liste des associations -->
+            <div class="row">
+                {% for association in associations %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">{{ association.nom }}</h5>
+                                <p class="card-text">
+                                    <i class="bi bi-building text-success"></i> {{ association.delegation.nom }}<br>
+                                    <i class="bi bi-geo-alt text-warning"></i> {{ association.adresse }}<br>
+                                    <i class="bi bi-calendar text-info"></i> {{ association.dateConstruction|date('Y-m-d') }}<br>
+                                    <i class="bi bi-telephone text-dark"></i> {{ association.telephone }}<br>
+                                    <small class="text-muted">
+                                        <strong>التخصصات:</strong><br>
+                                        {% for specialite in association.specialites %}
+                                            <span class="badge bg-secondary me-1">{{ specialite }}</span>
+                                        {% endfor %}
+                                    </small>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <a href="{{ path('app_association_sportif_show', {'id': association.id}) }}" class="btn btn-sm btn-info me-2">
+                                    <i class="bi bi-eye"></i> عرض
+                                </a>
+                                <a href="{{ path('app_association_sportif_edit', {'id': association.id}) }}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil"></i> تعديل
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i>
+                            <p class="mb-0">لا توجد جمعيات رياضية.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

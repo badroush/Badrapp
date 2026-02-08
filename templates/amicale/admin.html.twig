@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}لوحة إدارة الودادية
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5 px-4">
+		<div class="row">
+			<div class="col-12">
+				<div class="card shadow-lg border-0">
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+						<h2 class="mb-0">لوحة إدارة الودادية</h2>
+						<p class="mb-0 text-light">إدارة الطلبات والمستفيدين</p>
+					</div>
+					<div
+						class="card-body p-5">
+						<!-- Statistiques -->
+						<div class="row mb-4">
+							<div class="col-md-3 mb-3">
+								<div class="card border-light shadow-sm h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">في الانتظار</h5>
+										<span class="badge bg-warning fs-5">{{ stats.en_attente }}</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="card border-light shadow-sm h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">مقبول</h5>
+										<span class="badge bg-success fs-5">{{ stats.valide }}</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="card border-light shadow-sm h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">مرفوض</h5>
+										<span class="badge bg-danger fs-5">{{ stats.refuse }}</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="card border-light shadow-sm h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">مدفوع</h5>
+										<span class="badge bg-info fs-5">{{ stats.paye }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Bouton Ajouter offre -->
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<a href="{{ path('app_offre_new') }}" class="btn btn-primary px-4 py-2">
+								<i class="fas fa-plus-circle"></i>
+								إضافة عرض جديد
+							</a>
+						</div>
+
+						<!-- Tableau des offres -->
+						<div class="mb-5">
+							<h3 class="text-primary mb-3">العروض الحالية</h3>
+							<div class="table-responsive">
+								<table class="table table-hover table-bordered">
+									<thead class="table-light">
+										<tr>
+											<th>الاسم</th>
+											<th>الحالة</th>
+											<th>الإجراءات</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for offre in offres %}
+											<tr>
+												<td>
+													<strong>{{ offre.nom }}</strong>
+												</td>
+												<td>
+													<span class="badge
+																																																																																																																								                                                {% if offre.etat == 'active' %}bg-success
+																																																																																																																								                                                {% elseif offre.etat == 'inactive' %}bg-warning
+																																																																																																																								                                                {% elseif offre.etat == 'termine' %}bg-secondary
+																																																																																																																								                                                {% else %}bg-secondary
+																																																																																																																								                                                {% endif %}">
+														{% if offre.etat == 'active' %}
+															نشط
+														{% elseif offre.etat == 'inactive' %}
+															غير نشط
+														{% elseif offre.etat == 'termine' %}
+															منتهي
+														{% else %}
+															غير معروف
+														{% endif %}
+													</span>
+												</td>
+												<td>
+													<a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-sm btn-outline-primary">
+														<i class="fas fa-edit"></i>
+														تعديل
+													</a>
+													<form method="post" action="{{ path('app_offre_delete', {'id': offre.id}) }}" style="display:inline;" onsubmit="return confirm('هل أنت متأكد؟');">
+
+														<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offre.id) }}">
+
+														<button class="btn btn-sm btn-outline-danger">
+															<i class="fas fa-trash"></i>
+															حذف
+														</button>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<!-- Tableau des demandes -->
+						<div>
+							<h3 class="text-primary mb-3">جميع الطلبات</h3>
+							<div class="table-responsive">
+								<table class="table table-hover table-bordered">
+									<thead class="table-light">
+										<tr>
+											<th>العرض</th>
+											<th>المستخدم</th>
+											<th>التاريخ</th>
+											<th>عدد الأشهر</th>
+											<th>المبلغ الإجمالي</th>
+											<th>الحالة</th>
+											<th>الإجراءات</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for demande in demandes %}
+											<tr>
+												<td>{{ demande.offre.nom }}</td>
+												<td>{{ demande.beneficiaire.nomp }}</td>
+												<td>{{ demande.dateDemande|date('Y-m-d') }}</td>
+												<td>{{ demande.offre.dureeEnMois ?? '—' }}</td>
+												<td>
+													{% if demande.offre.total is defined and demande.offre.total %}
+														{{ demande.offre.total|number_format(3, '.', ',') }}
+													{% else %}
+														—
+													{% endif %}
+												</td>
+												<td>
+													<span class="badge
+																																																																																																																								                                                {% if demande.statut == 'en_attente' %}bg-warning
+																																																																																																																								                                                {% elseif demande.statut == 'valide' %}bg-success
+																																																																																																																								                                                {% elseif demande.statut == 'refuse' %}bg-danger
+																																																																																																																								                                                {% elseif demande.statut == 'paye' %}bg-info
+																																																																																																																								                                                {% else %}bg-secondary
+																																																																																																																								                                                {% endif %}">
+														{% if demande.statut == 'en_attente' %}
+															في الانتظار
+														{% elseif demande.statut == 'valide' %}
+															مقبول
+														{% elseif demande.statut == 'refuse' %}
+															مرفوض
+														{% elseif demande.statut == 'paye' %}
+															مدفوع
+														{% else %}
+															غير معروف
+														{% endif %}
+													</span>
+												</td>
+												<td>
+													<a href="{{ path('app_demande_show', {'id': demande.id}) }}" class="btn btn-sm btn-outline-info">
+														<i class="fas fa-eye"></i>
+														عرض
+													</a>
+													<a href="{{ path('app_demande_edit', {'id': demande.id}) }}" class="btn btn-sm btn-outline-warning">
+														<i class="fas fa-edit"></i>
+														تعديل
+													</a>
+													<form method="post" action="{{ path('app_demande_delete', {'id': demande.id}) }}" style="display: inline;">
+														<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ demande.id) }}">
+														<button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من حذف هذا الطلب؟')">
+															<i class="fas fa-trash"></i>
+															حذف
+														</button>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.card {
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+		.table th {
+			font-weight: 600;
+		}
+		.badge {
+			font-size: 0.85em;
+		}
+		.btn {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+	</style>
+
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} تقرير الميزانية {% endblock %}
+
+{% block stylesheets %}
+<style>
+    .preview-section {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        margin: 20px 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 18px;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        background-color: #fefefe;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 4px 1px;
+        border: 1px solid #ddd;
+        background-color: #ffffff;
+        line-height: 1.6;
+    }
+
+    .styled-table th {
+        background-color: #3498db;
+        color: white;
+        font-weight: bold;
+        font-size: 19px;
+    }
+
+    .styled-table td {
+        color: #333;
+        font-size: 18px;
+    }
+
+    .styled-table tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    .styled-table .total-row {
+        background-color: #ffeaa7 !important;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    .header-table td {
+        padding: 8px;
+    }
+    .header-info {
+        font-weight: bold;
+        font-size: 19px;
+    }
+    .section-footer {
+        background-color: #ddd;
+        font-weight: bold;
+        padding: 8px;
+        font-size: 17px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📋 تقرير ميزانية</h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de sélection -->
+            
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="etablissement" class="form-label">اختر المؤسسة</label>
+            <select name="etablissement" id="etablissement" class="form-select" onchange="this.form.submit()">
+                <option value="">اختر مؤسسة...</option>
+                {% for etab in etablissements %}
+                    <option value="{{ etab.id }}" {% if etab.id == (etablissement ? etab.id) %}selected{% endif %}>
+                        {{ etab.nom }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</form>
+{% else %}
+<!-- ✅ Afficher le nom de l'établissement pour les autres -->
+<div class="alert alert-info mb-4">
+    <strong>المؤسسة:</strong> {{ etablissement.nom }}
+</div>
+{% endif %}
+
+            {% if etablissement %}
+            <!-- Bouton d'impression -->
+            <div class="text-center mb-4">
+                <a href="{{ path('app_budget_imprimer', {'etablissement': etablissement.id}) }}" class="btn btn-success btn-lg" target="_blank">
+                    <i class="fas fa-print me-2"></i> طباعة الميزانية
+                </a>
+            </div>
+
+            <!-- Aperçu dans la page -->
+            <div class="preview-section">
+                <table class="header-table">
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="header-info">
+                                الجمهورية التونسية<br>
+                                وزارة الشباب و الرياضة<br>
+                                المندوبية الجهوية بمدنين<br>
+                                {{ etablissement.nom }}
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            {# <div class="header-info">
+                                تقرير ميزانية<br>
+                                {{ 'now'|date('Y') }}
+                            </div> #}
+                        </td>
+                        <td style="text-align: left;">
+                            
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="header-table">
+                    <tr class="section-footer">
+                        <td style="text-align:right"> السنة المالية: {{ 'now'|date('Y') }}</td>
+                        <td style="text-align:left">تاريخ الطبع: {{ 'now'|date('d-m-Y') }}</td>
+                    </tr>
+                </table>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>معرف الفصل</th>
+                            <th>الفصل</th>
+                            <th>المبلغ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for budget in budgets %}
+                        <tr>
+                            <td>{{ budget.idChapitre.code }}</td>
+                            <td style="text-align:right">{{ budget.idChapitre.nom }}</td>
+                            <td>{{ budget.montant|number_format(3, '.', ',') }} دت</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="background-color:#fdecea; color:#e74c3c; font-weight:bold;">لا توجد ميزانيات</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="total-row">
+                            <td colspan="2" style="text-align:right; font-weight:bold;">المجموع:</td>
+                            <td>
+                                {% set total = 0 %}
+                                {% for budget in budgets %}
+                                    {% set total = total + budget.montant %}
+                                {% endfor %}
+                                {{ total|number_format(3, '.', ',') }} دت
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

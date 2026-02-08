@@ -1,0 +1,59 @@
+<<<<<<< HEAD
+# config/routes.yaml
+
+# Chargement automatique des contrôleurs avec annotations/attributs
+=======
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+<<<<<<< HEAD
+
+# Routes personnalisées (en dehors de la section controllers)
+chapitre_budget:
+    path: /chapitre-budget
+    controller: App\Controller\ChapitreBudgetController::index
+
+ressource_budget:
+    path: /ressource-budget
+    controller: App\Controller\RessourceBudgetController::index
+
+budget:
+    path: /budget
+    controller: App\Controller\BudgetController::index
+
+ressource_affectation:
+    path: /ressource-affectation
+    controller: App\Controller\RessourceAffectationController::index
+
+app_contact_index:
+    path: /contact
+    controller: App\Controller\ContactController::index
+
+app_appel_index:
+    path: /appel
+    controller: App\Controller\AppelController::index
+
+app_annuaire_home:
+    path: /annuaire
+    controller: App\Controller\ContactController::index
+
+app_association_sportif_index:
+    path: /association_sportif
+    controller: App\Controller\AssociationSportifController::index
+
+app_delegation_index:
+    path: /delegation
+    controller: App\Controller\DelegationController::index
+
+app_seance_plenaire_index:
+    path: /seance_plenaire
+    controller: App\Controller\SeancePlenaireController::index
+
+app_document_seance_index:
+    path: /document_seance
+    controller: App\Controller\DocumentSeanceController::index
+=======
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DocumentSeance index{% endblock %}
+
+{% block body %}
+    <h1>DocumentSeance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Fichier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for document_seance in document_seances %}
+            <tr>
+                <td>{{ document_seance.id }}</td>
+                <td>{{ document_seance.nom }}</td>
+                <td>{{ document_seance.fichier }}</td>
+                <td>
+                    <a href="{{ path('app_document_seance_show', {'id': document_seance.id}) }}">show</a>
+                    <a href="{{ path('app_document_seance_edit', {'id': document_seance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_document_seance_new') }}">Create new</a>
+{% endblock %}

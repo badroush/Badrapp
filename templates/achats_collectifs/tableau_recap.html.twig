@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} جدول ملخص المشتريات {% endblock %}
+
+{% block stylesheets %}
+<style>
+    .preview-section {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        margin: 20px 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 18px;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        background-color: #fefefe;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 4px 1px;
+        border: 1px solid #ddd;
+        background-color: #ffffff;
+        line-height: 1.6;
+    }
+
+    .styled-table th {
+        background-color: #3498db;
+        color: white;
+        font-weight: bold;
+        font-size: 19px;
+    }
+
+    .styled-table td {
+        color: #333;
+        font-size: 18px;
+    }
+
+    .styled-table tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    .styled-table .total-row {
+        background-color: #ffeaa7 !important;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-family: "Tajawal", sans-serif;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    .header-table td {
+        padding: 8px;
+    }
+    .header-info {
+        font-weight: bold;
+        font-size: 19px;
+    }
+    .section-footer {
+        background-color: #ddd;
+        font-weight: bold;
+        padding: 8px;
+        font-size: 17px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📋 جدول ملخص المشتريات</h2>
+        </div>
+        <div class="card-body">
+            <!-- Bouton d'impression -->
+            <div class="text-center mb-4">
+                <a href="{{ path('app_resume_achats_imprimer') }}" class="btn btn-success btn-lg" target="_blank">
+                    <i class="fas fa-print me-2"></i> طباعة
+                </a>
+            </div>
+
+            <!-- Aperçu dans la page -->
+            <div class="preview-section">
+                <table class="header-table">
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="header-info">
+                                الجمهورية التونسية<br>
+                                وزارة الشباب و الرياضة<br>
+                                المندوبية الجهوية بمدنين
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="header-info">
+                                جدول ملخص المشتريات<br>
+                                {{ 'now'|date('Y') }}
+                            </div>
+                        </td>
+                        <td style="text-align: left;">
+                            
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="header-table">
+                    <tr class="section-footer">
+                        <td style="text-align:right"> السنة المالية: {{ 'now'|date('Y') }}</td>
+                        <td style="text-align:left">تاريخ الطبع: {{ 'now'|date('d-m-Y') }}</td>
+                    </tr>
+                </table>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            {% for etab in etablissements %}
+                                <th>{{ etab.nom }}</th>
+                            {% endfor %}
+                            <th>المجموع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for articleData in articles %}
+                            {% set article = articleData %}
+                            <tr>
+                                <td>{{ article.nom ?? 'N/A' }}</td>
+                                {% set totalArticle = 0 %}
+                                {% for etab in etablissements %}
+                                    {% set quantite = quantites[etab.id][article.id] ?? 0 %}
+                                    <td class="text-center">{{ quantite }}</td>
+                                    {% set totalArticle = totalArticle + quantite %}
+                                {% endfor %}
+                                <td class="text-center">{{ totalArticle }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

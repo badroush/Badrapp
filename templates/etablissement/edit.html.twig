@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تعديل مؤسسة{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+=======
+{% include "layout/header.html.twig" %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+            <h2>✏️ تعديل مؤسسة</h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.nom, {'label': 'اسم المؤسسة'}) }}
+                        {{ form_row(form.adresse, {'label': 'العنوان'}) }}
+                        {{ form_row(form.telephone, {'label': 'الهاتف'}) }}
+                    </div>
+                </div>
+                <button class="btn btn-success mt-3">
+                    <i class="bi bi-save"></i> تحديث المؤسسة
+                </button>
+                <a href="{{ path('etablissement_index') }}" class="btn btn-secondary mt-3">
+                    <i class="bi bi-arrow-return-left"></i> عودة
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

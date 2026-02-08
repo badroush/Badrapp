@@ -1,0 +1,89 @@
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+<<<<<<< HEAD
+            #custom_authenticator: App\Security\UserAuthenticator # ✅ Active ton authentificateur
+=======
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: /
+
+            logout:
+                path: app_logout
+                target: app_login
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+
+            # ✅ Rediriger les erreurs d'accès vers ton contrôleur
+            access_denied_url: /access-denied
+
+    access_control:
+<<<<<<< HEAD
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/budget, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_FNC, ROLE_DRJ] }
+    - { path: ^/ressources, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_FNC] }
+    - { path: ^/magasin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_MAG] }
+    - { path: ^/achat, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_DRJ] }
+    - { path: ^/inventaire, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_DRS] }
+    - { path: ^/sport, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_DRS] }
+    - { path: ^/amicale, roles: [ROLE_USER] }
+    - { path: ^/contact, roles: [ROLE_USER] }
+
+    
+    role_hierarchy:
+        ROLE_SUPER_ADMIN:
+            - ROLE_ADMIN
+            - ROLE_FNC
+            - ROLE_DRJ
+            - ROLE_DRS
+            - ROLE_MAG
+            - ROLE_USER
+
+        ROLE_ADMIN:
+            - ROLE_FNC
+            - ROLE_DRJ
+            - ROLE_DRS
+            - ROLE_MAG
+            - ROLE_USER
+
+        ROLE_FNC:
+            - ROLE_USER
+
+        ROLE_DRJ:
+            - ROLE_USER
+
+        ROLE_DRS:
+            - ROLE_USER
+
+        ROLE_MAG:
+            - ROLE_USER
+
+        ROLE_TECH:
+            - ROLE_USER
+=======
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: ROLE_USER }
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa

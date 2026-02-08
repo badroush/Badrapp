@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الدليل الهاتفي{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">📞 الدليل الهاتفي</h2>
+            <a href="{{ path('app_contact_new') }}" class="btn btn-light">
+                <i class="bi bi-plus-circle"></i> إضافة جهة اتصال
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Barre de recherche -->
+            <form method="GET" action="{{ path('app_contact_index') }}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" value="{{ app.request.query.get('q') }}" placeholder="البحث عن طريق الاسم أو الرقم" class="form-control">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> بحث
+                    </button>
+                </div>
+            </form>
+
+            <!-- Liste des contacts -->
+            <div class="row">
+                {% for contact in contacts %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">{{ contact.nom }}</h5>
+                                <p class="card-text">
+                                    <i class="bi bi-telephone text-success"></i> {{ contact.numero }}<br>
+                                    {% if contact.email %}
+                                        <i class="bi bi-envelope text-info"></i> {{ contact.email }}<br>
+                                    {% endif %}
+                                    {% if contact.adresse %}
+                                        <i class="bi bi-geo-alt text-warning"></i> {{ contact.adresse }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <a href="{{ path('app_contact_edit', {'id': contact.id}) }}" class="btn btn-sm btn-warning me-2">
+                                    <i class="bi bi-pencil"></i> تعديل
+                                </a>
+                                <a href="{{ path('app_appel_new') }}?contact={{ contact.id }}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-telephone-plus"></i> تسجيل مكالمة
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info text-center border-info">
+                            <i class="bi bi-info-circle"></i>
+                            <p class="mb-0">لا توجد جهات اتصال.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

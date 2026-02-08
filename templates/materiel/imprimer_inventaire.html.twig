@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>طباعة جرد المعدات</title>
+    <style>
+        body { 
+            font-family: "Tajawal", sans-serif; 
+            padding: 20px; 
+            position: relative; 
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50"><text x="50%" y="50%" font-size="10" fill="rgba(0,0,0,0.05)" text-anchor="middle" alignment-baseline="middle">BadrSoftwareDev - منظومة بدر للخدمات الإدارية</text></svg>');
+            background-repeat: repeat;
+            background-size: 300px 100px;
+        }
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            text-align: center;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 4px 1px;
+            border: 1px solid #ddd;
+            line-height: 1.6;
+        }
+        .styled-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .styled-table td {
+            color: #333;
+            font-size: 13px;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 15px;
+        }
+        .header-table td {
+            padding: 8px;
+        }
+        .header-info {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+                window.close();
+            };
+        };
+    </script>
+</head>
+<body>
+
+<!-- En-tête -->
+<table class="header-table">
+    <tr>
+        <td style="text-align: right;">
+            <div class="header-info">
+                الجمهورية التونسية<br>
+                وزارة الشباب و الرياضة<br>
+                {% if not is_granted('ROLE_ADMIN') %}
+                    المندوبية الجهوية بمدنين<br>
+                {% endif %} 
+              {{ app.user.etablissement.nom ?? 'N/A' }}<br>
+              {{ etab ? '' ~ etab : '' }}
+            </div>
+            
+        </td>
+        <td style="text-align: right;">
+            <div class="header-info">
+               <h1> تقرير جرد المعدات ({{ 'now'|date('Y') }})</h1>
+        
+            </div>
+        </td>
+        <td style="text-align: left;">
+            
+        </td>
+    </tr>
+</table>
+
+<table class="header-table">
+    <tr>
+        <td style="text-align:right; background-color: #ddd; font-weight: bold;"> التاريخ: {{ 'now'|date('d-m-Y') }}</td>
+         {% if region %}
+        <td style="text-align:center; background-color: #ddd; font-weight: bold;"> المكان: {{ region ?? 'N/A' }}</td>
+        {% endif %}
+        <td style="text-align:left; background-color: #ddd; font-weight: bold;"> العون: {{ app.user.nomp ?? 'N/A' }}</td>
+    </tr>
+</table>
+
+<!-- Tableau des résultats -->
+<div style="margin-top: 20px;">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th> المرجع </th>
+                <th> الاسم </th>
+                <th> المؤسسة </th>
+                <th> المكان </th>
+                <th> تاريخ الإقتناء </th>
+                <th> الحالة </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for materiel in materiels %}
+            <tr>
+                <td style="text-align:right;"> {{ materiel.libelleMateriel.reference }} </td>
+                <td style="text-align:right;"> {{ materiel.libelleMateriel.nom }} </td>
+                <td> {{ materiel.etablissement.nom ?? 'N/A' }} </td>
+                <td> {{ materiel.emplacement ?? 'N/A' }} </td>
+                <td> {{ materiel.dateAcquisition ? materiel.dateAcquisition|date('d/m/Y') : 'N/A' }} </td>
+                <td> {{ materiel.etat ?? 'N/A' }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

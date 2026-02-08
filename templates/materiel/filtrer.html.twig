@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} فلترة الجرد {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+{% endblock %} 
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0"> فلترة الجرد </h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de filtre -->
+            <form method="GET" class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label for="date_debut" class="form-label"> تاريخ الإقتناء (من) </label>
+                    <input type="date" class="form-control" id="date_debut" name="date_debut" value="{{ filters.date_debut }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_fin" class="form-label"> تاريخ الإقتناء (إلى) </label>
+                    <input type="date" class="form-control" id="date_fin" name="date_fin" value="{{ filters.date_fin }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="etablissement" class="form-label"> المؤسسة </label>
+                    <select class="form-select" id="etablissement" name="etablissement">
+                        <option value=""> الكل </option>
+                        
+                        {% for etab in etablissements %}
+                            <option value="{{ etab.id }}" {% if filters.etablissement == etab.id %}selected{% endif %}>
+                                {{ etab.nom }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="emplacement" class="form-label"> المكان </label>
+                    <select class="form-select" id="emplacement" name="emplacement">
+                        <option value=""> الكل </option>
+                        {% for emplacement in emplacements %}
+                            <option value="{{ emplacement }}" {% if filters.emplacement == emplacement %}selected{% endif %}>
+                                {{ emplacement }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="etat" class="form-label"> الحالة </label>
+                    <select class="form-select" id="etat" name="etat">
+                        <option value=""> الكل </option>
+                        {% for etat in etats %}
+                            <option value="{{ etat }}" {% if filters.etat == etat %}selected{% endif %}>
+                                {{ etat }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary"> بحث </button>
+                    <a href="{{ path('materiel_filtrer') }}" class="btn btn-secondary"> إلغاء </a>
+                    <a href="{{ path('materiel_imprimer', app.request.query.all) }}" class="btn btn-success" target="_blank"> 🖨️ طباعة </a>
+                </div>
+            </form>
+
+            <!-- Résultats -->
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="materielsTable">
+                    <thead>
+                        <tr>
+                            <th> الاسم </th>
+                            <th> المؤسسة </th>
+                            <th> المكان </th>
+                            <th> تاريخ الإقتناء </th>
+                            <th> الحالة </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for materiel in materiels %}
+                        <tr>
+                            <td> {{ materiel.libelleMateriel.nom ?? 'N/A' }} </td>
+                            <td> {{ materiel.etablissement.nom ?? 'N/A' }} </td>
+                            <td> {{ materiel.emplacement ?? 'N/A' }} </td>
+                            <td> {{ materiel.dateAcquisition ? materiel.dateAcquisition|date('d/m/Y') : 'N/A' }} </td>
+                            <td> {{ materiel.etat ?? 'N/A' }} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#materielsTable').DataTable({
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json"
+        },
+        "pageLength": 10,
+        "responsive": true,
+        "order": [[ 0, "asc" ]]
+    });
+});
+</script>
+
+{% endblock %}

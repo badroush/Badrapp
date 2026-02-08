@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}إضافة مورد ميزانية{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">➕ إضافة مورد ميزانية جديد</h2>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.code, {'label': 'الرمز'}) }}
+                        {{ form_row(form.nom, {'label': 'الاسم'}) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success mt-3">
+                    <i class="bi bi-save"></i> حفظ المورد
+                </button>
+                <a href="{{ path('app_ressource_budget_index') }}" class="btn btn-secondary mt-3">
+                    <i class="bi bi-arrow-return-left"></i> عودة
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

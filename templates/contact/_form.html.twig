@@ -1,0 +1,21 @@
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+    <div class="col-md-6">
+        {{ form_row(form.nom, {'label': 'الاسم'}) }}
+        {{ form_row(form.numero, {'label': 'الرقم'}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.email, {'label': 'البريد الإلكتروني'}) }}
+        {{ form_row(form.adresse, {'label': 'العنوان'}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.fax, {'label': 'الفاكس'}) }}
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success">
+            <i class="bi bi-save"></i> {{ button_label|default('حفظ') }}
+        </button>
+        <a href="{{ path('app_contact_index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-return-left"></i> عودة إلى القائمة
+        </a>
+    </div>
+{{ form_end(form) }}

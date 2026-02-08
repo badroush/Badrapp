@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}الرئيسية{% endblock %}
+
+{% block body %}
+<<<<<<< HEAD
+<div class="container-fluid px-4">
+    <!-- ===== HERO / Présentation ===== -->
+    <div class="row align-items-center py-5">
+        <div class="col-lg-8 text-end">
+            <h1 class="display-4 fw-bold text-primary">بدر للخدمات الإدارية</h1>
+            <p class="lead text-muted mb-4">
+                منصة متكاملة لإدارة الميزانية، المخزن، المشتريات الجماعية والصيانة بكل احترافية وسهولة.
+            </p>{% if is_granted("ROLE_ADMIN") %}
+            <a href="{{ path('app_rapports_index') }}" class="btn btn-primary btn-lg me-2 mb-2">ابدأ الآن</a>
+             {% endif %}
+            <a href="{{ path('app_profile_show') }}" class="btn btn-outline-primary btn-lg mb-2">ملفي الشخصي</a>
+           
+        </div>
+        <div class="col-lg-4 text-center">
+    <img src="{{ asset('images/logo100.png') }}" alt="Logo Badr App" class="app-logo img-fluid">
+</div>
+    </div>
+{% if is_granted("ROLE_ADMIN") %}
+    <!-- ===== MENU RAPIDE ===== -->
+    <div class="row g-3 mt-4">
+        <div class="col-md-4">
+            <a href="{{ path('app_achats_collectifs_index') }}" class="dashboard-link bg-primary text-white d-flex justify-content-between align-items-center p-4 rounded shadow-sm">
+                <div>
+                    <h5 class="mb-1">الشراءات الجماعية</h5>
+                    <p class="mb-0 opacity-75">إدارة الطلبات و الموارد</p>
+                </div>
+                <i class="fas fa-shopping-cart fa-2x"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('materiel_index') }}" class="dashboard-link bg-success text-white d-flex justify-content-between align-items-center p-4 rounded shadow-sm">
+                <div>
+                    <h5 class="mb-1">جرد الأثاث</h5>
+                    <p class="mb-0 opacity-75">إدارة الأثاث</p>
+                </div>
+                <i class="fas fa-box fa-2x"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_rapports_index') }}" class="dashboard-link bg-warning text-white d-flex justify-content-between align-items-center p-4 rounded shadow-sm">
+                <div>
+                    <h5 class="mb-1">التقارير</h5>
+                    <p class="mb-0 opacity-75">تحليل البيانات و الإحصائيات</p>
+                </div>
+                <i class="fas fa-chart-line fa-2x"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== STATISTIQUES ===== -->
+    
+    <div class="row g-3 mt-4">
+        <div class="col-md-3">
+            <div class="stat-box bg-light p-4 rounded shadow-sm text-end">
+                <h4 class="text-primary mb-1">{{ stats.total_articles ?? 0 }}</h4>
+                <p class="mb-0 text-muted">المنتجات</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box bg-light p-4 rounded shadow-sm text-end">
+                <h4 class="text-success mb-1">{{ stats.total_mouvements ?? 0 }}</h4>
+                <p class="mb-0 text-muted">الحركات</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box bg-light p-4 rounded shadow-sm text-end">
+                <h4 class="text-warning mb-1">{{ stats.total_budgets ?? 0 }}</h4>
+                <p class="mb-0 text-muted">الميزانيات</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box bg-light p-4 rounded shadow-sm text-end">
+                <h4 class="text-info mb-1">{{ stats.total_users ?? 0 }}</h4>
+                <p class="mb-0 text-muted">المستخدمين</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- ===== SECTIONS SUPPLÉMENTAIRES ===== -->
+    <div class="row g-4 mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-end">
+                    <h5 class="card-title text-primary">إدارة الميزانية</h5>
+                    <p class="card-text text-muted">إضافة الفصول، تخصيص الموارد و متابعة الميزانيات بسهولة و بسرعة.</p>
+                    <a href="{{ path('app_budget_index') }}" class="btn btn-outline-primary btn-sm">عرض الميزانية</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-end">
+                    <h5 class="card-title text-warning">الصيانة والدعم</h5>
+                    <p class="card-text text-muted">متابعة طلبات الصيانة والتواصل مع الدعم التقني بشكل سريع ومرن.</p>
+                    <a href="{{ path('app_demande_maintenance_index') }}" class="btn btn-outline-warning btn-sm">عرض الصيانة</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* ===== HERO ===== */
+    .lead {
+        font-size: 1.2rem;
+    }
+
+    /* ===== Dashboard Links ===== */
+    .dashboard-link {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .dashboard-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* ===== Statistiques ===== */
+    .stat-box {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+
+    /* ===== Cards ===== */
+    .card-title {
+        font-weight: 700;
+    }
+    .card-text {
+        font-size: 0.95rem;
+    }
+
+    /* ===== Responsive ===== */
+    @media(max-width: 991.98px){
+        .dashboard-link {
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+        .dashboard-link i {
+            margin-top: 10px;
+        }
+        .stat-box {
+            min-height: 100px;
+            margin-bottom: 1rem;
+        }
+    }
+    /* Style pour le logo de l'application */
+.app-logo {
+    width: 150px;          /* Taille fixe ou max-width pour s'adapter aux écrans */
+    max-width: 100%;       /* S'assure que l'image ne dépasse pas le conteneur */
+    height: auto;          /* Garde les proportions */
+    border-radius: 15px;   /* Coins arrondis pour un style moderne */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Légère ombre pour relief */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);  /* Effet zoom au survol */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+</style>
+=======
+{% include "layout/header.html.twig" %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                📦 مرحبًا بك في تطبيق إدارة المخزون
+            </div>
+            <div class="card-body">
+                <p>استخدم القائمة أعلاه للبدء في إدارة مخزون متجرك.</p>
+                <a href="{{ path('mouvement_ajouter') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> إضافة حركة مخزون
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+>>>>>>> d6476d60ab6c137fd57e0e94d3b5e16948081daa
+{% endblock %}

@@ -1,0 +1,76 @@
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+<div class="col-md-6">
+	{{ form_row(form.delegation, {'label': 'المندوبية'}) }}
+	{{ form_row(form.nom, {'label': 'اسم الجمعية'}) }}
+	{{ form_row(form.adresse, {'label': 'العنوان'}) }}
+	{{ form_row(form.dateConstruction, {'label': 'تاريخ الإنشاء'}) }}
+	{{ form_row(form.telephone, {'label': 'الهاتف'}) }}
+	{{ form_row(form.fax, {'label': 'الفاكس'}) }}
+	{{ form_row(form.classeSportif, {'label': 'الشعبة الرياضية'}) }}
+	{{ form_row(form.nombreMales, {'label': 'عدد الذكور'}) }}
+	{{ form_row(form.nombreFemelles, {'label': 'عدد الإناث'}) }}
+</div>
+<div class="col-md-6">
+	{{ form_row(form.directeur, {'label': 'المدير'}) }}
+	{{ form_row(form.telDirecteur, {'label': 'هاتف المدير'}) }}
+	{{ form_row(form.directeurAdjoint, {'label': 'نائب المدير'}) }}
+	{{ form_row(form.telDirAdj, {'label': 'هاتف نائب المدير'}) }}
+	{{ form_row(form.secretariatGeneral, {'label': 'الكاتب العام'}) }}
+	{{ form_row(form.telSecGen, {'label': 'هاتف الكاتب العام'}) }}
+	{{ form_row(form.tresorier, {'label': 'أمين المال'}) }}
+	{{ form_row(form.telTres, {'label': 'هاتف أمين المال'}) }}
+</div>
+<div class="col-12">
+	<div class="mb-3">
+		{{ form_label(form.specialites, 'التخصصات') }}
+		<div id="specialites-container">
+			{% for specialite in form.specialites %}
+				<div class="input-group mb-2">
+					{{ form_widget(specialite) }}
+					<button type="button" class="btn btn-outline-danger remove-specialite">حذف</button>
+				</div>
+			{% endfor %}
+		</div>
+		<button type="button" class="btn btn-outline-primary" id="add-specialite">إضافة تخصص</button>
+	</div>
+</div>
+<div class="col-12">
+	<button class="btn btn-success">
+		<i class="bi bi-save"></i>
+		{{ button_label|default('حفظ') }}
+	</button>
+	<a href="{{ path('app_association_sportif_index') }}" class="btn btn-secondary">
+		<i class="bi bi-arrow-return-left"></i>
+		عودة إلى القائمة
+	</a>
+</div>
+{{ form_end(form) }}
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const container = document.getElementById('specialites-container');
+const addButton = document.getElementById('add-specialite');
+
+addButton.addEventListener('click', function () {
+const newDiv = document.createElement('div');
+newDiv.className = 'input-group mb-2';
+newDiv.innerHTML = `
+            <input type="text" name="association_sportif[specialites][]" class="form-control" placeholder="أدخل تخصص">
+            <button type="button" class="btn btn-outline-danger remove-specialite">حذف</button>
+        `;
+container.appendChild(newDiv);
+
+// Ajouter l'événement de suppression
+newDiv.querySelector('.remove-specialite').addEventListener('click', function () {
+newDiv.remove();
+});
+});
+
+// Gestion des boutons de suppression existants
+document.querySelectorAll('.remove-specialite').forEach(button => {
+button.addEventListener('click', function () {
+this.closest('.input-group').remove();
+});
+});
+});
+</script>
